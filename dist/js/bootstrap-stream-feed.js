@@ -3,9 +3,9 @@
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // SETTINGS
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-var settings = { 
-        publish_key   : 'demo'
-    ,   subscribe_key : 'demo'
+var settings = {
+        publish_key   : 'pub-5ad63a7a-0c72-4b86-978d-960dcdb971e1'
+    ,   subscribe_key : 'sub-459a5e4a-9de6-11e0-982f-efe715a9b6b8'
     ,   secret_key    : ''
     ,   channel       : 'demo'
 };
@@ -26,14 +26,20 @@ var pubnub                = PUBNUB.init(settings)
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // PUSH SUBMIT ACTION
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-PUBNUB.bind( 'mousedown,touchstart', push_submit, function() {
+PUBNUB.bind( 'mousedown,touchstart', push_submit, submit_headline );
+PUBNUB.bind( 'keyup', push_text_area, function(e) {
+   if ((e.keyCode || e.charCode) === 13) submit_headline();
+} );
+
+function submit_headline() {
     var headline = push_text_area.value;
+    if (!headline) return;
     push_text_area.value = '';
     author_action( 'new', {
         id       : PUBNUB.uuid(),
         headline : headline
     } );
-} );
+}
 
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -49,15 +55,26 @@ function author_action( action, data ) {
     });
 }
 
+
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-// RECEIVE EVENTS FOR LOTS OF DIFFERENT THINGS
+// DATA SYNC
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-pubnub.subscribe({
-    channel : settings.channel,
-    message : function(message) {
-        PUBNUB.events.fire( 'message.' + message.action, message.data );
+pubnub.history({
+    limit    : 100,
+    channel  : settings.channel,
+    callback : function(messages) {
+        pubnub.each( messages, event_processor );
+        pubnub.subscribe({
+            backfill : true,
+            channel  : settings.channel,
+            message  : event_processor
+        });
     }
 });
+
+function event_processor(message) {
+    PUBNUB.events.fire( 'message.' + message.action, message.data );
+}
 
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
