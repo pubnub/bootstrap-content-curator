@@ -1,79 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Bootstrap Stream Feeder</title>
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="dist/css/styles.css" rel="stylesheet">
+</head>
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Bootstrap-stream-feeder : A real-time feed management system using Bootstrap UI that enables the rapid authoring of feed headlines  for applications in social news, social TV, social music, social sports, social commerce and social finance." />
+<body>
+    <div id="wrap"><div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Bootstrap Stream Feeder</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#get-started">Get Started</a></li>
+                <li><a href="#about">JS Snippets</a></li>
+                <li><a href="#contact">View on GitHub</a></li>
+            </ul>
+        </div>
+    </div>
+    </div></div>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Bootstrap-stream-feeder</title>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/stephenlb/bootstrap-stream-feeder">View on GitHub</a>
-
-          <h1 id="project_title">Bootstrap-stream-feeder</h1>
-          <h2 id="project_tagline">A real-time feed management system using Bootstrap UI that enables the rapid authoring of feed headlines  for applications in social news, social TV, social music, social sports, social commerce and social finance.</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/stephenlb/bootstrap-stream-feeder/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/stephenlb/bootstrap-stream-feeder/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
+    <div class="jumbotron">
+        <h1>Bootstrap Stream Feeder</h1>
+        <div class="container">
+            <p class="lead">
+                A real-time feed management system that enables the rapid
+                authoring of feed headlines 
+                <br>
+                for applications in
+                <strong>social news</strong>,
+                social TV,
+                social music,
+                social sports,
+                social commerce and
+                social finance.
+            </p>
+            <p><a
+                class="btn btn-lg btn-info"
+                href="#"
+                role="button"
+            >Get Started</a></p>
+        </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+    <!--
+    <div class="container">
+        <p> SOCIAL WIDGETS </p>
+        <p> SOCIAL WIDGETS </p>
+    </div>
+    -->
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <h2>
+                    1. Write
+                    &nbsp;<span class="glyphicon glyphicon-pencil"></span>
+                </h2>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+                <!-- UI INPUT -->
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button
+                            id="push-submit"
+                            class="btn btn-default"
+                            type="button"
+                        >Push</button>
+                    </span>
+                    <input 
+                        id="push-text-area"
+                        type="text"
+                        class="form-control"
+                    >
+                </div>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+                <!-- UI INPUT DESCRIPTION -->
+                <p><br><small>
+                    Write text headline then press <strong>"Push"</strong>
+                    or press <strong>Enter</strong>.
+                    This will send your headlines
+                    to the curator to <strong>Publish / Edit</strong>.
+                </small></p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
+            </div>
+            <div class="col-lg-4">
+                <h2>
+                    2. Publish / Edit
+                    &nbsp;
+                    <span class="glyphicon glyphicon-cloud-upload"></span>
+                </h2>
+                <div id="new-headline-area"><div></div></div>
+            </div>
+            <div class="col-lg-4">
+                <h2>
+                    3. It's Live
+                    &nbsp;<span class="glyphicon glyphicon-eye-open"></span>
+                </h2>
+                <div id="live-posts"><div></div></div>
+            </div>
+        </div>
     </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Bootstrap-stream-feeder maintained by <a href="https://github.com/stephenlb">stephenlb</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
+    <!-- Site footer -->
+    <div class="container">
+        <div class="footer">
+            <p>&copy; PubNub 2013</p>
+        </div>
     </div>
 
-    
 
-  </body>
+<!-- TEMPLATES OF ALL KINDS -->
+
+<script id="published-template" type="text/template">
+    <p class="lead publish-bottom">{headline}</p>
+</script>
+
+<script id="publish-edit-template" type="text/template">
+    <p id="{id}">{headline}</p><p class="publish-bottom">
+        <button
+            data-action="publish"
+            data-data="{id}"
+            type="button"
+            class="btn btn-default btn-success btn-xs"
+        >
+            <span class="glyphicon glyphicon-cloud-upload"></span>
+            Publish
+        </button>
+        <button
+            data-action="edit"
+            data-data="{id}"
+            type="button"
+            class="btn btn-default btn-xs"
+        >
+            <span class="glyphicon glyphicon-edit"></span>
+            Edit
+        </button>
+        <button
+            data-action="delete"
+            data-data="{id}"
+            type="button"
+            class="btn btn-default btn-xs"
+        >
+            <span class="glyphicon glyphicon-trash"></span>
+            Delete
+        </button>
+    </p>
+</script>
+
+<!-- Scripts -->
+<script src="http://cdn.pubnub.com/pubnub.min.js"></script>
+<script src="dist/js/bootstrap-stream-feed.js"></script>
+
+
+</body>
 </html>
