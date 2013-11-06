@@ -16,13 +16,11 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="#">Bootstrap Stream Feeder</a>
         </div>
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="#get-started">Get Started</a></li>
-                <li><a href="#about">JS Snippets</a></li>
-                <li><a href="#contact">View on GitHub</a></li>
-            </ul>
-        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="#get-started">Get Started</a></li>
+            <li><a href="#about">JS Snippets</a></li>
+            <li><a href="#contact">View on GitHub</a></li>
+        </ul>
     </div>
     </div></div>
 
@@ -71,7 +69,7 @@
                             id="push-submit"
                             class="btn btn-default"
                             type="button"
-                        >Push</button>
+                        >Submit</button>
                     </span>
                     <input 
                         id="push-text-area"
@@ -82,7 +80,8 @@
 
                 <!-- UI INPUT DESCRIPTION -->
                 <p><br><small>
-                    Write text headline then press <strong>"Push"</strong>
+                    Write a text headline then press
+                    <strong>"Submit"</strong>
                     or press <strong>Enter</strong>.
                     This will send your headlines
                     to the curator to <strong>Publish / Edit</strong>.
@@ -107,6 +106,92 @@
         </div>
     </div>
 
+    <div class="featurebg"><div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <h2>
+                    <span class="glyphicon glyphicon-cloud-download"></span>
+                    DataSync
+                </h2>
+                <p>
+                    <strong>Dropbox for your data</strong>
+                    powered by <a href="http://www.pubnub.com/">PubNub</a>
+                    the worlds largest global Real-time Network.
+                    <strong>DataSync</strong>
+                    is the ability to have apps always be
+                    up-to-date regardless of network state.
+                    Upon reconnect, all data is re-synced with
+                    the client app.
+                    Your data is replicated to all data centers
+                    and encrypted.
+                </p>
+            </div>
+            <div class="col-lg-4">
+                <h2>
+                    <span class="glyphicon glyphicon-globe"></span>
+                    Real-time Network
+                </h2>
+                <p>
+                    <strong>Highly Available</strong>
+                    Global Real-time Network
+                    is mandatory for distributed consumers
+                    in order to provide a fast and reliable
+                    user experience.
+                    You can only get that fast "Snappy" feel
+                    with a Global Real-time Network.
+                </p>
+            </div>
+            <div class="col-lg-4">
+                <h2>
+                    <span class="glyphicon glyphicon-lock"></span>
+                    Maximum Security
+                </h2>
+                <p>
+                    Security is a complex and widely growing requirement
+                    especially for Real-time Mobile and Web Messaging
+                    Systems like PubNub.
+                    <strong>SSL</strong> TLS Sockets,
+                    <strong>SHA256 Message Signing</strong>,
+                    <strong>ACL (Access Control Level) </strong>and
+                    <strong>AES256 Symmetric Crypto</strong>
+                    are industry standard methods for providing
+                    High Levels of security for your application.
+                </p><p>
+                    PubNub provides a default baseline level of security,
+                    with optional <strong>High Security</strong>
+                    with industry standard solutions for Signaling
+                    and DataSync applications.
+                </p>
+            </div>
+        </div>
+    </div></div>
+
+
+    <div class="container"><div class="row">
+        <div class="col-lg-6">
+            <h3>First TODOs</h3>
+            <ul class="list-group">
+                <li class="list-group-item">separate channels</li>
+                <li class="list-group-item">namespace channels</li>
+                <li class="list-group-item">setup form</li>
+                <li class="list-group-item">code snippets</li>
+                <li class="list-group-item"></li>
+            </ul>
+        </div>
+
+        <div class="col-lg-6">
+            <h3>Second TODOs</h3>
+            <ul class="list-group">
+                <li class="list-group-item">Security w/ Options</li>
+                <li class="list-group-item">footer/pubnub</li>
+                <li class="list-group-item">animation</li>
+                <li class="list-group-item">multiple display opts</li>
+                <li class="list-group-item">add compatibility docs</li>
+                <li class="list-group-item"></li>
+            </ul>
+        </div>
+    </div></div>
+
     <!-- Site footer -->
     <div class="container">
         <div class="footer">
@@ -118,7 +203,7 @@
 <!-- TEMPLATES OF ALL KINDS -->
 
 <script id="published-template" type="text/template">
-    <p class="lead publish-bottom">{headline}</p>
+    <p id="published-{id}" class="lead publish-bottom">{headline}</p>
 </script>
 
 <script id="publish-edit-template" type="text/template">
