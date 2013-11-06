@@ -49,3 +49,7 @@ small {
 h2 {
     font-weight: 200;
 }
+
+#push-edit-panel {
+    display: none;
+}

@@ -102,8 +102,7 @@ function event_processor(message,b,c) {
 // CURATOR RECEIVE HEADLINE FOR PUBLISHING AND EDITING
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 PUBNUB.events.bind( 'message.new', function(data) {
-    var previous = PUBNUB.$(data.id);
-    if (previous) new_headline_area.removeChild(previous.parentNode);
+    delete_private(data);
     (function(){
         var div = PUBNUB.create('div');
         new_headline_area.insertBefore( div, first_div(new_headline_area) );
@@ -116,8 +115,7 @@ PUBNUB.events.bind( 'message.new', function(data) {
 // RECEIVING LIVE POSTS: STREAM FEEDER!
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 PUBNUB.events.bind( 'message.publish', function(data) {
-    var previous = PUBNUB.$('published-' + data.id);
-    if (previous) live_posts.removeChild(previous.parentNode);
+    delete_public(data);
     (function(){
         var div = PUBNUB.create('div');
         live_posts.insertBefore( div, first_div(live_posts) );
@@ -140,7 +138,8 @@ function delete_public(data) {
 }
 function delete_private(data) {
     var previous = PUBNUB.$(data.id);
-    if (previous) new_headline_area.removeChild(previous.parentNode);
+    if (previous)
+        new_headline_area.removeChild(previous.parentNode.parentNode);
 }
 
 

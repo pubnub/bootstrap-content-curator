@@ -95,6 +95,7 @@
                     &nbsp;
                     <span class="glyphicon glyphicon-cloud-upload"></span>
                 </h2>
+                <div class="panel panel-primary"></div>
                 <div id="push-edit-panel" class="panel panel-primary"></div>
                 <div id="new-headline-area"><div></div></div>
             </div>
@@ -146,6 +147,10 @@
                     user experience.
                     You can only get that fast "Snappy" feel
                     with a Global Real-time Network.
+                </p><p>
+                    Every event is replicated more than 350 times;
+                    <strong>pure global reliability</strong>
+                    via a Real-time Network.
                 </p>
             </div>
             <div class="col-lg-4">
@@ -213,44 +218,47 @@
 </script>
 
 <script id="publish-edit-template" type="text/template">
-    <p id="{id}">{headline}</p><p class="publish-bottom">
-        <button
-            data-action="publish"
-            data-data="{id}"
-            type="button"
-            class="btn btn-default btn-success btn-xs"
-        >
-            <span class="glyphicon glyphicon-cloud-upload"></span>
-            Publish
-        </button>
-        <button
-            data-action="edit"
-            data-data="{id}"
-            type="button"
-            class="btn btn-default btn-xs"
-        >
-            <span class="glyphicon glyphicon-edit"></span>
-            Edit
-        </button>
-        <button
-            data-action="hide"
-            data-data="{id}"
-            type="button"
-            class="btn btn-default btn-xs"
-        >
-            <span class="glyphicon glyphicon-eye-close"></span>
-            Hide
-        </button>
-        <button
-            data-action="delete"
-            data-data="{id}"
-            type="button"
-            class="btn btn-default btn-xs"
-        >
-            <span class="glyphicon glyphicon-trash"></span>
-            Forever Delete
-        </button>
-    </p>
+    <blockquote>
+        <p id="{id}">{headline}</p>
+        <p class="publish-bottomd">
+            <button
+                data-action="publish"
+                data-data="{id}"
+                type="button"
+                class="btn btn-default btn-success btn-xs"
+            >
+                <span class="glyphicon glyphicon-cloud-upload"></span>
+                Publish
+            </button>
+            <button
+                data-action="edit"
+                data-data="{id}"
+                type="button"
+                class="btn btn-warning btn-xs"
+            >
+                <span class="glyphicon glyphicon-edit"></span>
+                Edit
+            </button>
+            <button
+                data-action="hide"
+                data-data="{id}"
+                type="button"
+                class="btn btn-default btn-xs"
+            >
+                <span class="glyphicon glyphicon-off"></span>
+                Hide
+            </button>
+            <button
+                data-action="delete"
+                data-data="{id}"
+                type="button"
+                class="btn btn-danger btn-xs"
+            >
+                <span class="glyphicon glyphicon-trash"></span>
+                Forever Delete
+            </button>
+        </p>
+    </blockquote>
 </script>
 
 <script id="curator-editor-template" type="text/template">
