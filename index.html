@@ -58,9 +58,10 @@
         <div class="row">
             <div class="col-lg-4">
                 <h2>
-                    1. Write
+                    1. Writer
                     &nbsp;<span class="glyphicon glyphicon-pencil"></span>
                 </h2>
+                <div class="panel panel-primary"></div>
 
                 <!-- UI INPUT -->
                 <div class="input-group">
@@ -90,17 +91,19 @@
             </div>
             <div class="col-lg-4">
                 <h2>
-                    2. Publish / Edit
+                    2. Curator
                     &nbsp;
                     <span class="glyphicon glyphicon-cloud-upload"></span>
                 </h2>
+                <div id="push-edit-panel" class="panel panel-primary"></div>
                 <div id="new-headline-area"><div></div></div>
             </div>
             <div class="col-lg-4">
                 <h2>
-                    3. It's Live
+                    3. Viewer
                     &nbsp;<span class="glyphicon glyphicon-eye-open"></span>
                 </h2>
+                <div class="panel panel-primary"></div>
                 <div id="live-posts"><div></div></div>
             </div>
         </div>
@@ -114,9 +117,13 @@
                     DataSync
                 </h2>
                 <p>
-                    <strong>Dropbox for your data</strong>
+                    <strong>Dropbox for your apps data</strong>
                     powered by <a href="http://www.pubnub.com/">PubNub</a>
                     the worlds largest global Real-time Network.
+                    All changes are pushed directly to the app
+                    via an always-on Socket Connection
+                    in real-time as changes are made.
+                </p><p>
                     <strong>DataSync</strong>
                     is the ability to have apps always be
                     up-to-date regardless of network state.
@@ -144,7 +151,7 @@
             <div class="col-lg-4">
                 <h2>
                     <span class="glyphicon glyphicon-lock"></span>
-                    Maximum Security
+                    Mega Security
                 </h2>
                 <p>
                     Security is a complex and widely growing requirement
@@ -171,10 +178,9 @@
         <div class="col-lg-6">
             <h3>First TODOs</h3>
             <ul class="list-group">
-                <li class="list-group-item">separate channels</li>
-                <li class="list-group-item">namespace channels</li>
-                <li class="list-group-item">setup form</li>
+                <li class="list-group-item">setup form api key</li>
                 <li class="list-group-item">code snippets</li>
+                <li class="list-group-item"></li>
                 <li class="list-group-item"></li>
             </ul>
         </div>
@@ -201,7 +207,6 @@
 
 
 <!-- TEMPLATES OF ALL KINDS -->
-
 <script id="published-template" type="text/template">
     <p id="published-{id}" class="lead publish-bottom">{headline}</p>
 </script>
@@ -227,21 +232,69 @@
             Edit
         </button>
         <button
+            data-action="hide"
+            data-data="{id}"
+            type="button"
+            class="btn btn-default btn-xs"
+        >
+            <span class="glyphicon glyphicon-eye-close"></span>
+            Hide
+        </button>
+        <button
             data-action="delete"
             data-data="{id}"
             type="button"
             class="btn btn-default btn-xs"
         >
             <span class="glyphicon glyphicon-trash"></span>
-            Delete
+            Forever Delete
         </button>
     </p>
 </script>
 
-<!-- Scripts -->
+<script id="curator-editor-template" type="text/template">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-edit"></span>
+            Edit
+        </h3>
+    </div>
+    <div class="panel-body">
+        <p>
+            <input 
+                id="push-text-edit-area"
+                type="text"
+                class="form-control"
+            >
+        </p><p>
+            <button
+                data-action="save"
+                data-data="{id}"
+                type="button"
+                class="btn btn-info btn-xs"
+            >
+                <span
+                    class="glyphicon glyphicon-save"
+                ></span>
+                <strong>Save</strong> (Not Publish)
+            </button>
+            <button
+                data-action="cancel"
+                data-data="{id}"
+                type="button"
+                class="btn btn-danger btn-xs"
+            >
+                <span
+                    class="glyphicon glyphicon-remove-sign"
+                ></span>
+                <strong>Cancel</strong>
+            </button>
+        </p>
+    </div>
+</script>
+
 <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
 <script src="dist/js/bootstrap-stream-feed.js"></script>
-
 
 </body>
 </html>
