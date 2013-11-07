@@ -12,20 +12,44 @@ PUBNUB.sync = function( name, settings ) {
     ,   transmitting = false
     ,   self         = function() { return db };
 
+    // TODO - 
+    // TODO - replay log from oldest known to newest as they come in
+    // TODO - .on() events
+    // TODO - subscribe backfill with prevent duplicate events
+    // TODO - 
+
     sync_binlog({
         net      : pubnub
     ,   channel  : name
     ,   limit    : settings.limit
     ,   start    : last
-    ,   callback : function(msgs) {
+    ,   progress : function(msgs) {
+            // TODO
             console.log(msgs);
         }
     });
 
+    // create
     self.create = function(data) {
         var id = execute( 'create', data );
         db[id] = data;
         return id;
+    };
+
+    // read
+    self.read = function(data) {
+        return db[id];
+    };
+
+    // update
+    self.update = function( id, data ) {
+        execute( 'update', merge( db[id], data ), id );
+    };
+
+    // delete
+    self.delete = function(id) {
+        execute( 'delete', {}, id );
+        delete db[id];
     };
 
     // create, update, delete
@@ -33,7 +57,7 @@ PUBNUB.sync = function( name, settings ) {
         var id     = id || PUBNUB.uuid()
         ,   domain = PUBNUB.uuid();
 
-        // local transaction log to prevent firing events twice
+        // transaction log to prevent firing events twice
         tranlog[domain] = 1;
 
         binlog.push({
