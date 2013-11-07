@@ -28,39 +28,41 @@
     var db = PUBNUB.sync( 'db1', settings );
 
     // ON CREATE EVENT
-    db.on( 'create', function(item) {
+    db.on.create(function(item) {
         log(item);
-    } );
+    });
 
     // ON UPDATE EVENT
-    db.on( 'update', function(item) {
+    db.on.update(function(item) {
         log(item);
-    } );
+    });
 
     // ON DELETE EVENT
-    db.on( 'delete', function(item) {
+    db.on.delete(function(item) {
         log(item);
-    } );
+    });
 
     // CREATE
-    var id1 = db.create({ key : 'value1' })
-    ,   id2 = db.create({ key : 'value2' })
-    ,   id3 = db.create({ foo : 'bar'    });
+    var obj1 = db.create({ key : 'value1' })
+    ,   obj2 = db.create({ key : 'value2' })
+    ,   obj3 = db.create({ foo : 'bar'    });
 
-    // READ
-    var data1 = db.read(id1);
-    log(data1);
+    // READ and FIND
+    var obj4     = db.read(id1);
+    var obj_list = db.find({ key : 'value1' });
+    log(obj4);
+    log(obj_list);
 
     // UPDATE
-    db.update( id1, { key : 'other1' } );
-    db.update( id2, { key : 'other2' } );
+    obj2.update({ key : 'other1' });
+    obj3.update({ key : 'other2' });
 
     // DELETE
-    db.delete(id3);
+    obj3.delete();
 
-    // PRINT ALL
+    // PRINT ALL OBJECTS
     log(db());
-
+    log(db.all());
 
     function log(data) {
         var body = document.getElementsByTagName('body')[0];

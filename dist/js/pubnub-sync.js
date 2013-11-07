@@ -10,6 +10,9 @@ PUBNUB.sync = function( name, settings ) {
     ,   binlog       = storage.get('binlog-'+name)  || []
     ,   last         = storage.get('last-'+name)    || 0
     ,   transmitting = false
+    ,   oncreate     = function() {}
+    ,   onupdate     = function() {}
+    ,   ondelete     = function() {}
     ,   self         = function() { return db };
 
     // TODO - 
