@@ -90,19 +90,25 @@ PUBNUB.sync = function( name, settings ) {
         execute( 'update', merge( db[id], data ), id );
     };
 
-    // delete
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // DELETE
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.delete = function(id) {
         execute( 'delete', {}, id );
         delete db[id];
     };
 
-    // delete_all
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // DELETE_ALL
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.delete_all = function() {
         PUBNUB.each( db, self.delete );
     };
 
     // TODO
-    // find
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // FIND
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     db.find = function(query) {
         var found = [];
         PUBNUB.each( query, function( q_key, q_val ) {
@@ -112,7 +118,9 @@ PUBNUB.sync = function( name, settings ) {
         } );
     };
 
-    // make reference object
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // MAKE REFERENCE OBJECT
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     function reference(id) {
         var ref    = { id : id, data : db[id] };
         ref.delete = function()     { self.delete(id)         };
@@ -120,7 +128,9 @@ PUBNUB.sync = function( name, settings ) {
         return ref;
     }
 
-    // create, update, delete transaction manager
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // CREATE, UPDATE, DELETE TRANSACTION MANAGER
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     function execute( command, data, id ) {
         var id     = id || PUBNUB.uuid()
         ,   domain = PUBNUB.uuid();
@@ -137,12 +147,15 @@ PUBNUB.sync = function( name, settings ) {
 
         storage().set( 'binlog-'+name, binlog );
 
-        transmit();
+        commit();
 
         return id;
     }
 
-    function transmit() {
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // COMMIT
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    function commit() {
         console.log( '%d untransmitted', binlog.length );
         var transaction = binlog[0];
         if (!transaction || transmitting) return;
@@ -151,16 +164,19 @@ PUBNUB.sync = function( name, settings ) {
         pubnub.publish({
             channel  : name
         ,   message  : transaction
-        ,   error    : continue_transmissions
-        ,   callback : continue_transmissions
+        ,   error    : next_commit
+        ,   callback : next_commit
         });
     }
 
-    function continue_transmissions(info) {
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // NEXT COMMIT
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    function next_commit(info) {
         transmitting = false;
         var success = info && info[0];
 
-        setTimeout( transmit, success ? 10 : 1000 );
+        setTimeout( commit, success ? 10 : 1000 );
         if (!success) return;
 
         binlog.shift();
@@ -179,7 +195,7 @@ function sync_binlog(args) {
     ,   callback = args['callback'] || function(){}
     ,   progress = args['progress'] || function(){}
     ,   limit    = args['limit']    || 5
-    ,   start    = args['start']    || 0//'13838846030533620'
+    ,   start    = args['start']    || 0
     ,   net      = args['net']
     ,   count    = 100
     ,   binlog   = []
@@ -214,7 +230,7 @@ function sync_binlog(args) {
 }
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-// Local Merge
+// LOCAL MEMORY STORAGE MERGE
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 var each = PUBNUB.each;
 function merge( target, src ) {
@@ -230,7 +246,7 @@ function merge( target, src ) {
 }
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-// Local Storage
+// LOCAL DISK STORAGE
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 function storage() {
     var ls = window['localStorage'];
