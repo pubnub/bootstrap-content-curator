@@ -13,20 +13,24 @@ PUBNUB.sync = function( name, settings ) {
     ,   transmitting = false
     ,   self         = function() { return db }
     ,   on           = {
-            create : function() {}
-        ,   update : function() {}
-        ,   delete : function() {}
-        ,   debug  : function() {}
+            create     : function() {}
+        ,   update     : function() {}
+        ,   delete     : function() {}
+        ,   debug      : function() {}
+        ,   connect    : function() {}
+        ,   disconnect : function() {}
     };
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // BINDING EVENTS FOR USER
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.on = {
-        create : function(cb) { on.create = cb }
-    ,   update : function(cb) { on.update = cb }
-    ,   delete : function(cb) { on.delete = cb }
-    ,   debug  : function(cb) { on.debug  = cb }
+        create     : function(cb) { on.create     = cb }
+    ,   update     : function(cb) { on.update     = cb }
+    ,   delete     : function(cb) { on.delete     = cb }
+    ,   debug      : function(cb) { on.debug      = cb }
+    ,   connect    : function(cb) { on.connect    = cb }
+    ,   disconnect : function(cb) { on.disconnect = cb }
     };
 
     // TODO - 
@@ -36,24 +40,37 @@ PUBNUB.sync = function( name, settings ) {
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // SYNC DB
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    sync_binlog({
-        net      : pubnub
-    ,   channel  : name
-    ,   limit    : settings.limit
-    ,   start    : last
-    ,   callback : function( evts, timetoken ) {
-            pubnub.subscribe({
-                backfill  : true
-            ,   channel   : name
-            ,   message   : function( m, e ){ receiver( m, e[1] ) }
-            });
-        }
-    ,   progress : function( evts, timetoken ) {
-            PUBNUB.each( evts, function(evt){ 
-                receiver( evt, timetoken );
-            } );
-        }
-    });
+    sync_db();
+    function sync_db() {
+        sync_binlog({
+            net      : pubnub
+        ,   channel  : name
+        ,   limit    : settings.limit
+        ,   start    : last
+        ,   callback : function( evts, timetoken ) {
+                pubnub.subscribe({
+                    backfill   : true
+                ,   channel    : name
+                ,   message    : function( m, e ){ receiver( m, e[1] ) }
+                ,   connect    : function() {
+                        on.debug('connected to internet');
+                        on.connect('connected to internet');
+                    }
+                ,   disconnect : function() {
+                        on.debug('disconnected from internet');
+                        on.disconnect('disconnected from internet');
+                        pubnub.unsubscribe({ channel : name });
+                        sync_db();
+                    }
+                });
+            }
+        ,   progress : function( evts, timetoken ) {
+                PUBNUB.each( evts, function(evt){ 
+                    receiver( evt, timetoken );
+                } );
+            }
+        });
+    }
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // COMMIT RECEIVER OF REMOTE SYNC DATA
