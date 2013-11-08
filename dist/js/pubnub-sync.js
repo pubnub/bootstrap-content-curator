@@ -34,11 +34,6 @@ PUBNUB.sync = function( name, settings ) {
     ,   disconnect : function(cb) { on.disconnect = cb }
     };
 
-    // TODO - 
-    // TODO - subscribe backfill with prevent duplicate events
-    // TODO - double check dups
-    // TODO - 
-
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // SYNC DB
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
