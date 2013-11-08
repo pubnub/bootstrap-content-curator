@@ -9,7 +9,8 @@ PUBNUB.sync = function( name, settings ) {
     ,   db           = storage().get('db-'+name)      || {}
     ,   tranlog      = storage().get('tranlog-'+name) || {}
     ,   binlog       = storage().get('binlog-'+name)  || []
-    ,   last         = 0//+storage().get('last-'+name)   || 0
+    ,   lastime      = storage().get('lastime-'+name) || 0
+    ,   connected    = false
     ,   transmitting = false
     ,   self         = function() { return db }
     ,   on           = {
@@ -35,6 +36,7 @@ PUBNUB.sync = function( name, settings ) {
 
     // TODO - 
     // TODO - subscribe backfill with prevent duplicate events
+    // TODO - double check dups
     // TODO - 
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -46,17 +48,14 @@ PUBNUB.sync = function( name, settings ) {
             net      : pubnub
         ,   channel  : name
         ,   limit    : settings.limit
-        ,   start    : last
+        ,   start    : lastime
         ,   callback : function( evts, timetoken ) {
                 pubnub.subscribe({
                     backfill   : true
                 ,   channel    : name
                 ,   message    : function( m, e ){ receiver( m, e[1] ) }
-                ,   connect    : function() {
-                        on.debug('connected to internet');
-                        on.connect('connected to internet');
-                    }
                 ,   disconnect : function() {
+                        connected = false;
                         on.debug('disconnected from internet');
                         on.disconnect('disconnected from internet');
                         pubnub.unsubscribe({ channel : name });
@@ -68,6 +67,12 @@ PUBNUB.sync = function( name, settings ) {
                 PUBNUB.each( evts, function(evt){ 
                     receiver( evt, timetoken );
                 } );
+
+                // Connection User Callbacks
+                if (connected) return;
+                connected = true;
+                on.debug('connected to internet');
+                on.connect('connected to internet');
             }
         });
     }
@@ -85,7 +90,7 @@ PUBNUB.sync = function( name, settings ) {
         if (!(id && domain && command && data)) return;
 
         // Save binlog point
-        storage().set( 'last-'+name, timetoken );
+        storage().set( 'lastime-'+name, lastime=timetoken );
 
         // Leave if Event Processed
         if (domain in tranlog) return;
@@ -252,7 +257,7 @@ function sync_binlog(args) {
         count    : count,
         start    : start,
         reverse  : true,
-        error    : retry
+        error    : retry,
         callback : receiver
     };
 
@@ -276,7 +281,6 @@ function sync_binlog(args) {
     }
 
     function retry(info) {
-        on.debug(info);
         setTimeout( fetch_binlog, 1000 );
     }
 
