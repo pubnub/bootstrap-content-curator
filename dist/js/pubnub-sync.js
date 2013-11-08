@@ -11,18 +11,22 @@ PUBNUB.sync = function( name, settings ) {
     ,   binlog       = storage().get('binlog-'+name)  || []
     ,   last         = 0//+storage().get('last-'+name)   || 0
     ,   transmitting = false
-    ,   oncreate     = function() {}
-    ,   onupdate     = function() {}
-    ,   ondelete     = function() {}
-    ,   self         = function() { return db };
+    ,   self         = function() { return db }
+    ,   on           = {
+            create : function() {}
+        ,   update : function() {}
+        ,   delete : function() {}
+        ,   debug  : function() {}
+    };
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // BINDING EVENTS FOR USER
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.on = {
-        create : function(cb) { oncreate = cb }
-    ,   update : function(cb) { onupdate = cb }
-    ,   delete : function(cb) { ondelete = cb }
+        create : function(cb) { on.create = cb }
+    ,   update : function(cb) { on.update = cb }
+    ,   delete : function(cb) { on.delete = cb }
+    ,   debug  : function(cb) { on.debug  = cb }
     };
 
     // TODO - 
@@ -41,12 +45,12 @@ PUBNUB.sync = function( name, settings ) {
             pubnub.subscribe({
                 backfill  : true
             ,   channel   : name
-            ,   message   : receiver
+            ,   message   : function( m, e ){ receiver( m, e[1] ) }
             });
         }
     ,   progress : function( evts, timetoken ) {
             PUBNUB.each( evts, function(evt){ 
-                receiver( evt, {}, timetoken );
+                receiver( evt, timetoken );
             } );
         }
     });
@@ -54,7 +58,7 @@ PUBNUB.sync = function( name, settings ) {
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // COMMIT RECEIVER OF REMOTE SYNC DATA
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    function receiver( evt, _, timetoken ) {
+    function receiver( evt, timetoken ) {
         var id      = evt.id
         ,   domain  = evt.domain
         ,   command = evt.command
@@ -65,7 +69,6 @@ PUBNUB.sync = function( name, settings ) {
 
         // Save binlog point
         storage().set( 'last-'+name, timetoken );
-        console.log(JSON.stringify(evt));
 
         // Leave if Event Processed
         if (domain in tranlog) return;
@@ -95,7 +98,7 @@ PUBNUB.sync = function( name, settings ) {
 
         // Save Local DB
         storage().set( 'db-'+name, db );
-        oncreate(ref);
+        on.create(ref);
 
         return ref;
     };
@@ -113,7 +116,7 @@ PUBNUB.sync = function( name, settings ) {
     self.update = function( id, data ) {
         execute( 'update', merge( db[id], data ), id );
         storage().set( 'db-'+name, db );
-        onupdate(reference(id));
+        on.update(reference(id));
     };
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -121,7 +124,7 @@ PUBNUB.sync = function( name, settings ) {
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.delete = function(id) {
         execute( 'delete', db[id], id );
-        ondelete(reference(id));
+        on.delete(reference(id));
         delete db[id];
         storage().set( 'db-'+name, db );
     };
@@ -136,11 +139,11 @@ PUBNUB.sync = function( name, settings ) {
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // FIND
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    db.find = function(query) {
+    self.find = function(query) {
         var found = [];
         PUBNUB.each( query, function( key, val ) {
             PUBNUB.each( db, function( id, row ) {
-                if (key in row && val == row[key]) found.push(db[dbkey]);
+                if (key in row && val == row[key]) found.push(db[id]);
             } );
         } );
         return found;
@@ -183,7 +186,7 @@ PUBNUB.sync = function( name, settings ) {
     // COMMIT
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     function commit() {
-        console.log( '%d untransmitted', binlog.length );
+        on.debug( '%d untransmitted commits remaining', binlog.length );
         var transaction = binlog[0];
         if (!transaction || transmitting) return;
         transmitting = true;

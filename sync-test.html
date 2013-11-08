@@ -33,6 +33,11 @@
     // OPEN DB CONNECTION
     var db = PUBNUB.sync( 'db1', settings );
 
+    // ON DEBUG LOG EVENT
+    db.on.debug(function(message) {
+        log( 'on.debug', message );
+    });
+
     // ON CREATE EVENT
     db.on.create(function(item) {
         log( 'on.create', item );
@@ -77,7 +82,7 @@
     obj3.delete();
 
     // PRINT ALL OBJECTS
-    log(db());
+    //log(db());
 
     // DISPLAY LOGGING TO SCREEN
     function log() {
