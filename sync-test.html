@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>PubNub DataSync Test</title>
+    <title>PubNub DataSync TDD</title>
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="dist/css/styles.css" rel="stylesheet">
-</head>
+</head><body>
+
+<div class="container">
+    <h1>PubNub DataSync TDD</h1>
+    <p>Output Details:</p>
+    <pre id="logging"></pre>
+</div>
 
 <script src="https://cdn.pubnub.com/pubnub.min.js"></script>
 <script src="https://cdn.pubnub.com/pubnub-crypto.min.js"></script>
@@ -19,7 +25,7 @@
         publish_key   : 'pub-5ad63a7a-0c72-4b86-978d-960dcdb971e1'
     ,   subscribe_key : 'sub-459a5e4a-9de6-11e0-982f-efe715a9b6b8'
     ,   secret_key    : 'sec-fa847381-dcdb-4bcf-a8aa-7b812c390441'
-    ,   cipher        : 'ODgwNDsmIzczMDustKOiJiM4NzM0O7aqSDNh2mig'
+    ,   cipher_key    : 'ODgwNDsmIzczMDustKOiJiM4NzM0O7aqSDNh2mig'
     ,   limit         : 5000 // max binlog replay
     ,   ssl           : true
     };
@@ -29,17 +35,17 @@
 
     // ON CREATE EVENT
     db.on.create(function(item) {
-        log(item);
+        log( 'on.create', item );
     });
 
     // ON UPDATE EVENT
     db.on.update(function(item) {
-        log(item);
+        log( 'on.update', item );
     });
 
     // ON DELETE EVENT
     db.on.delete(function(item) {
-        log(item);
+        log( 'on.delete', item );
     });
 
     // CREATE
@@ -47,10 +53,17 @@
     ,   obj2 = db.create({ key : 'value2' })
     ,   obj3 = db.create({ foo : 'bar'    });
 
+    log( 'obj1', obj1 );
+    log(obj1.id);
+    log(obj2.id);
+    log(obj3.id);
+
     // READ and FIND
-    var obj4     = db.read(id1);
+    var obj4     = db.read(obj1.id);
     var obj_list = db.find({ key : 'value1' });
-    log(obj4);
+    log('obj4.id',obj4.id);
+    log('obj4.data',obj4.data);
+    log('obj4',obj4);
     log(obj_list);
 
     // UPDATE
@@ -64,11 +77,19 @@
     log(db());
     log(db.all());
 
-    function log(data) {
-        var body = document.getElementsByTagName('body')[0];
-        body.innerHTML = JSON.stringify(data) + '<br>' + body.innerHTML;
-    }
+    // DISPLAY LOGGING TO SCREEN
+    function log() {
+        var out    = JSON.stringify(arguments)
+        ,   logger = log.logging || (function(){
+            log.number = 0;
+            return (log.logging = PUBNUB.$("logging"));
+        })();
 
+        log.logging.innerHTML =
+            ++log.number + ') ' +
+            out + '<br>' +
+            log.logging.innerHTML;
+    }
 
 })();</script>
 

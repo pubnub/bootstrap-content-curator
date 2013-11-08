@@ -4,18 +4,26 @@
 // SYNC
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 PUBNUB.sync = function( name, settings ) {
-    var pubnub       = PUBNUB.secure(settings)
-    ,   db           = storage.get('db-'+name)      || {}
-    ,   tranlog      = storage.get('tranlog-'+name) || {}
-    ,   binlog       = storage.get('binlog-'+name)  || []
-    ,   last         = storage.get('last-'+name)    || 0
+    //var pubnub       = PUBNUB.secure(settings)
+    var pubnub       = PUBNUB.init(settings)
+    ,   db           = storage().get('db-'+name)      || {}
+    ,   tranlog      = storage().get('tranlog-'+name) || {}
+    ,   binlog       = storage().get('binlog-'+name)  || []
+    ,   last         = storage().get('last-'+name)    || 0
     ,   transmitting = false
     ,   oncreate     = function() {}
     ,   onupdate     = function() {}
     ,   ondelete     = function() {}
     ,   self         = function() { return db };
 
+    self.on = {
+        create : function(cb) { oncreate = cb }
+    ,   update : function(cb) { onupdate = cb }
+    ,   delete : function(cb) { ondelete = cb }
+    };
+
     // TODO - 
+    // TODO - ensure Full Transmit (NO DIFFs!@!!)
     // TODO - replay log from oldest known to newest as they come in
     // TODO - .on() events
     // TODO - subscribe backfill with prevent duplicate events
@@ -36,12 +44,19 @@ PUBNUB.sync = function( name, settings ) {
     self.create = function(data) {
         var id = execute( 'create', data );
         db[id] = data;
-        return id;
+        var ref = reference(id);
+
+        // Save Local DB
+        storage().set( 'db-'+name, db );
+
+        oncreate(ref);
+
+        return ref;
     };
 
     // read
-    self.read = function(data) {
-        return db[id];
+    self.read = function(id) {
+        return reference(id);
     };
 
     // update
@@ -55,7 +70,15 @@ PUBNUB.sync = function( name, settings ) {
         delete db[id];
     };
 
-    // create, update, delete
+    // make reference object
+    function reference(id) {
+        var ref    = { id : id, data : db[id] };
+        ref.delete = function()     { self.delete(id)         };
+        ref.update = function(data) { self.update( id, data ) };
+        return ref;
+    }
+
+    // create, update, delete transaction manager
     function execute( command, data, id ) {
         var id     = id || PUBNUB.uuid()
         ,   domain = PUBNUB.uuid();
@@ -70,7 +93,7 @@ PUBNUB.sync = function( name, settings ) {
             ,   data    : data
         });
 
-        storage.set( 'binlog-'+name, binlog );
+        storage().set( 'binlog-'+name, binlog );
 
         transmit();
 
@@ -85,12 +108,12 @@ PUBNUB.sync = function( name, settings ) {
         pubnub.publish({
             channel  : name
         ,   message  : transaction
-        ,   error    : proceed
-        ,   callback : proceed
+        ,   error    : continue_transmissions
+        ,   callback : continue_transmissions
         });
     }
 
-    function proceed(info) {
+    function continue_transmissions(info) {
         transmitting = false;
         var success = info && info[0];
 
@@ -98,7 +121,7 @@ PUBNUB.sync = function( name, settings ) {
         if (!success) return;
 
         binlog.shift();
-        storage.set( 'binlog-'+name, binlog );
+        storage().set( 'binlog-'+name, binlog );
     }
 
     return self;
