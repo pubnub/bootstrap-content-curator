@@ -186,7 +186,8 @@ PUBNUB.sync = function( name, settings ) {
     // COMMIT
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     function commit() {
-        on.debug( '%d untransmitted commits remaining', binlog.length );
+        on.debug(binlog.length + ' untransmitted commits remaining');
+
         var transaction = binlog[0];
         if (!transaction || transmitting) return;
         transmitting = true;
@@ -234,6 +235,7 @@ function sync_binlog(args) {
         count    : count,
         start    : start,
         reverse  : true,
+        error    : retry
         callback : receiver
     };
 
@@ -254,6 +256,11 @@ function sync_binlog(args) {
         ) return callback( binlog, start );
 
         fetch_binlog();
+    }
+
+    function retry(info) {
+        on.debug(info);
+        setTimeout( fetch_binlog, 1000 );
     }
 
     function fetch_binlog() { net.history(params) }

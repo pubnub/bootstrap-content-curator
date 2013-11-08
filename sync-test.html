@@ -26,7 +26,7 @@
     ,   subscribe_key : 'sub-459a5e4a-9de6-11e0-982f-efe715a9b6b8'
     ,   secret_key    : 'sec-fa847381-dcdb-4bcf-a8aa-7b812c390441'
     ,   cipher_key    : 'ODgwNDsmIzczMDustKOiJiM4NzM0O7aqSDNh2mig'
-    ,   limit         : 5000 // max binlog replay
+    ,   limit         : 5000 // max binlog catchup
     ,   ssl           : true
     };
 
@@ -52,7 +52,6 @@
     db.on.delete(function(item) {
         log( 'on.delete', item );
     });
-    
 
     // CREATE
     var obj1 = db.create({ key : +new Date })
