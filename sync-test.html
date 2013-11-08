@@ -47,11 +47,21 @@
     db.on.delete(function(item) {
         log( 'on.delete', item );
     });
+    
+    /*
+    PUBNUB.each( Array(200).join(',').split(','), function(a,b,c){
+        console.log({ key : b });
+        db.create({ key : b });
+    });
+    */
+
+    return
+
 
     // CREATE
-    var obj1 = db.create({ key : 'value1' })
-    ,   obj2 = db.create({ key : 'value2' })
-    ,   obj3 = db.create({ foo : 'bar'    });
+    var obj1 = db.create({ key : +new Date })
+    ,   obj2 = db.create({ key : +new Date })
+    ,   obj3 = db.create({ foo : +new Date });
 
     log( 'obj1', obj1 );
     log(obj1.id);
@@ -60,11 +70,11 @@
 
     // READ and FIND
     var obj4     = db.read(obj1.id);
-    var obj_list = db.find({ key : 'value1' });
+    //var obj_list = db.find({ key : 'value1' });
     log('obj4.id',obj4.id);
     log('obj4.data',obj4.data);
     log('obj4',obj4);
-    log(obj_list);
+    //log(obj_list);
 
     // UPDATE
     obj2.update({ key : 'other1' });
@@ -75,7 +85,6 @@
 
     // PRINT ALL OBJECTS
     log(db());
-    log(db.all());
 
     // DISPLAY LOGGING TO SCREEN
     function log() {

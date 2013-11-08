@@ -9,13 +9,16 @@ PUBNUB.sync = function( name, settings ) {
     ,   db           = storage().get('db-'+name)      || {}
     ,   tranlog      = storage().get('tranlog-'+name) || {}
     ,   binlog       = storage().get('binlog-'+name)  || []
-    ,   last         = storage().get('last-'+name)    || 0
+    ,   last         = +storage().get('last-'+name)   || 0
     ,   transmitting = false
     ,   oncreate     = function() {}
     ,   onupdate     = function() {}
     ,   ondelete     = function() {}
     ,   self         = function() { return db };
 
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // BINDING EVENTS FOR USER
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.on = {
         create : function(cb) { oncreate = cb }
     ,   update : function(cb) { onupdate = cb }
@@ -23,24 +26,43 @@ PUBNUB.sync = function( name, settings ) {
     };
 
     // TODO - 
-    // TODO - ensure Full Transmit (NO DIFFs!@!!)
     // TODO - replay log from oldest known to newest as they come in
     // TODO - .on() events
     // TODO - subscribe backfill with prevent duplicate events
     // TODO - 
 
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // SYNC DB
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     sync_binlog({
         net      : pubnub
     ,   channel  : name
     ,   limit    : settings.limit
     ,   start    : last
-    ,   progress : function(msgs) {
-            // TODO
-            console.log(msgs);
+    ,   callback : function( evts, timetoken ) {
+            pubnub.subscribe({
+                backfill  : true
+            ,   channel   : name
+            ,   message   : receiver
+            });
+        }
+    ,   progress : function( evts, timetoken ) {
+            PUBNUB.each( evts, function(evt){ 
+                receiver( evt, {}, timetoken );
+            } );
         }
     });
 
-    // create
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // RECEIVER OF REMOTE SYNC DATA
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    function receiver( evt, _, timetoken ) {
+        storage().set( 'last-'+name, +timetoken - 80000000 );
+    }
+
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // CREATE
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.create = function(data) {
         var id = execute( 'create', data );
         db[id] = data;
@@ -54,12 +76,16 @@ PUBNUB.sync = function( name, settings ) {
         return ref;
     };
 
-    // read
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // READ
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.read = function(id) {
         return reference(id);
     };
 
-    // update
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // UPDATE
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.update = function( id, data ) {
         execute( 'update', merge( db[id], data ), id );
     };
@@ -68,6 +94,22 @@ PUBNUB.sync = function( name, settings ) {
     self.delete = function(id) {
         execute( 'delete', {}, id );
         delete db[id];
+    };
+
+    // delete_all
+    self.delete_all = function() {
+        PUBNUB.each( db, self.delete );
+    };
+
+    // TODO
+    // find
+    db.find = function(query) {
+        var found = [];
+        PUBNUB.each( query, function( q_key, q_val ) {
+            PUBNUB.each( db, function( db_key, db_val ) {
+                //if (key in 
+            } );
+        } );
     };
 
     // make reference object
@@ -101,6 +143,7 @@ PUBNUB.sync = function( name, settings ) {
     }
 
     function transmit() {
+        console.log( '%d untransmitted', binlog.length );
         var transaction = binlog[0];
         if (!transaction || transmitting) return;
         transmitting = true;
@@ -136,7 +179,7 @@ function sync_binlog(args) {
     ,   callback = args['callback'] || function(){}
     ,   progress = args['progress'] || function(){}
     ,   limit    = args['limit']    || 5
-    ,   start    = args['start']    || 0
+    ,   start    = args['start']    || 0//'13838846030533620'
     ,   net      = args['net']
     ,   count    = 100
     ,   binlog   = []
@@ -144,6 +187,7 @@ function sync_binlog(args) {
         channel  : channel,
         count    : count,
         start    : start,
+        reverse  : true,
         callback : receiver
     };
 
@@ -151,18 +195,18 @@ function sync_binlog(args) {
 
     function receiver(messages) {
         var msgs     = messages[0];
-        start        = messages[1];
+        start        = messages[2];
         params.start = start;
 
         PUBNUB.each( msgs.reverse(), function(m) {binlog.push(m)} );
 
-        callback(binlog);
-        progress(msgs);
+        progress( msgs.reverse(), start );
 
-        if (binlog.length >= limit) return;
-        if (msgs.length < count)    return;
+        // if done then call last user cb
+        if ( binlog.length >= limit ||
+             msgs.length    < count
+        ) return callback( binlog, start );
 
-        count = 100;
         fetch_binlog();
     }
 
