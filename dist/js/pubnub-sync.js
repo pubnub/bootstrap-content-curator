@@ -57,7 +57,7 @@ PUBNUB.sync = function( name, settings ) {
     // RECEIVER OF REMOTE SYNC DATA
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     function receiver( evt, _, timetoken ) {
-        storage().set( 'last-'+name, +timetoken - 80000000 );
+        storage().set( 'last-'+name, timetoken );
     }
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
