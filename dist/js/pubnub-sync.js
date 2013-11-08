@@ -9,7 +9,7 @@ PUBNUB.sync = function( name, settings ) {
     ,   db           = storage().get('db-'+name)      || {}
     ,   tranlog      = storage().get('tranlog-'+name) || {}
     ,   binlog       = storage().get('binlog-'+name)  || []
-    ,   last         = +storage().get('last-'+name)   || 0
+    ,   last         = 0//+storage().get('last-'+name)   || 0
     ,   transmitting = false
     ,   oncreate     = function() {}
     ,   onupdate     = function() {}
@@ -26,8 +26,6 @@ PUBNUB.sync = function( name, settings ) {
     };
 
     // TODO - 
-    // TODO - replay log from oldest known to newest as they come in
-    // TODO - .on() events
     // TODO - subscribe backfill with prevent duplicate events
     // TODO - 
 
@@ -54,10 +52,37 @@ PUBNUB.sync = function( name, settings ) {
     });
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    // RECEIVER OF REMOTE SYNC DATA
+    // COMMIT RECEIVER OF REMOTE SYNC DATA
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     function receiver( evt, _, timetoken ) {
+        var id      = evt.id
+        ,   domain  = evt.domain
+        ,   command = evt.command
+        ,   data    = evt.data;
+
+        // Leave if non-good evt
+        if (!(id && domain && command && data)) return;
+
+        // Save binlog point
         storage().set( 'last-'+name, timetoken );
+        console.log(JSON.stringify(evt));
+
+        // Leave if Event Processed
+        if (domain in tranlog) return;
+        tranlog[domain] = 1;
+        storage().set( 'tranlog-'+name, tranlog );
+
+        // Merge Event
+        if (command == "create") db[id] = data;
+        if (command == "update") db[id] = data;
+        if (command == "delete") delete db[id];
+
+        // Save Commit
+        storage().set( 'db-'+name, db );
+
+        // User Callbacks
+        on[command](evt);
+
     }
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -70,7 +95,6 @@ PUBNUB.sync = function( name, settings ) {
 
         // Save Local DB
         storage().set( 'db-'+name, db );
-
         oncreate(ref);
 
         return ref;
@@ -88,14 +112,18 @@ PUBNUB.sync = function( name, settings ) {
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.update = function( id, data ) {
         execute( 'update', merge( db[id], data ), id );
+        storage().set( 'db-'+name, db );
+        onupdate(reference(id));
     };
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // DELETE
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.delete = function(id) {
-        execute( 'delete', {}, id );
+        execute( 'delete', db[id], id );
+        ondelete(reference(id));
         delete db[id];
+        storage().set( 'db-'+name, db );
     };
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -105,17 +133,17 @@ PUBNUB.sync = function( name, settings ) {
         PUBNUB.each( db, self.delete );
     };
 
-    // TODO
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // FIND
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     db.find = function(query) {
         var found = [];
-        PUBNUB.each( query, function( q_key, q_val ) {
-            PUBNUB.each( db, function( db_key, db_val ) {
-                //if (key in 
+        PUBNUB.each( query, function( key, val ) {
+            PUBNUB.each( db, function( id, row ) {
+                if (key in row && val == row[key]) found.push(db[dbkey]);
             } );
         } );
+        return found;
     };
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -135,9 +163,6 @@ PUBNUB.sync = function( name, settings ) {
         var id     = id || PUBNUB.uuid()
         ,   domain = PUBNUB.uuid();
 
-        // transaction log to prevent firing events twice
-        tranlog[domain] = 1;
-
         binlog.push({
                 id      : id
             ,   domain  : domain
@@ -145,6 +170,8 @@ PUBNUB.sync = function( name, settings ) {
             ,   data    : data
         });
 
+        tranlog[domain] = 1;
+        storage().set( 'tranlog-'+name, tranlog );
         storage().set( 'binlog-'+name, binlog );
 
         commit();

@@ -48,15 +48,6 @@
         log( 'on.delete', item );
     });
     
-    /*
-    PUBNUB.each( Array(200).join(',').split(','), function(a,b,c){
-        console.log({ key : b });
-        db.create({ key : b });
-    });
-    */
-
-    return
-
 
     // CREATE
     var obj1 = db.create({ key : +new Date })
@@ -68,13 +59,15 @@
     log(obj2.id);
     log(obj3.id);
 
-    // READ and FIND
+    // READ
     var obj4     = db.read(obj1.id);
-    //var obj_list = db.find({ key : 'value1' });
     log('obj4.id',obj4.id);
     log('obj4.data',obj4.data);
     log('obj4',obj4);
-    //log(obj_list);
+
+    // FIND
+    var obj_list = db.find({ key : 'value1' });
+    log(obj_list);
 
     // UPDATE
     obj2.update({ key : 'other1' });
