@@ -42,7 +42,7 @@ PUBNUB.sync = function( name, settings ) {
         sync_binlog({
             net      : pubnub
         ,   channel  : name
-        ,   limit    : settings.limit
+        ,   limit    : settings.limit || 5000
         ,   start    : lastime
         ,   callback : function( evts, timetoken ) {
                 pubnub.subscribe({
@@ -104,6 +104,24 @@ PUBNUB.sync = function( name, settings ) {
         on[command](evt);
 
     }
+
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // DESTROY SELF: Totally Start Over
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    self.destroy = function() {
+        pubnub.unsubscribe({ channel : name });
+        storage().del('lastime-'+name);
+        self.clear_local_db();
+    };
+
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // CLEAR LOCAL DATABASE
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    self.clear_local_db = function() {
+        storage().del('db-'+name);
+        storage().del('tranlog-'+name);
+        storage().del('binlog-'+name);
+    };
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // CREATE
@@ -307,6 +325,11 @@ function storage() {
         'get' : function(key) {
             try {
                 if (ls) return JSON.parse(ls.getItem(key));
+            } catch(e) { return }
+        },
+        'del' : function(key) {
+            try {
+                if (ls) return ls.removeItem(key);
             } catch(e) { return }
         },
         'set' : function( key, value ) {
