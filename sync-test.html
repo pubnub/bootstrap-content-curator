@@ -21,12 +21,15 @@
 <script src="dist/js/pubnub-sync.js"></script>
 <script>(function(){
 
+    var current_time = +new Date();
+    var one_day      = 24 * 60 * 60 * 1000
+    var start_at     = current_time - one_day;
     var settings = {
         publish_key   : 'pub-5ad63a7a-0c72-4b86-978d-960dcdb971e1'
     ,   subscribe_key : 'sub-459a5e4a-9de6-11e0-982f-efe715a9b6b8'
     ,   secret_key    : 'sec-fa847381-dcdb-4bcf-a8aa-7b812c390441'
     ,   cipher_key    : 'ODgwNDsmIzczMDustKOiJiM4NzM0O7aqSDNh2mig'
-    ,   limit         : 200 // max binlog replay
+    ,   start         : (start_at * 10000)
     ,   ssl           : true
     };
 
@@ -34,22 +37,20 @@
     var db = PUBNUB.sync( 'db1', settings );
 
     // ON DEBUG LOG EVENT
-    db.on.debug(function(message) {
-        log( 'on.debug', message );
-    });
+    db.on.debug(function(message){ log( 'on.debug', message ) });
 
     // ON CREATE EVENT
-    db.on.create(function(item) {
+    db.on.create(function(item){
         log( 'on.create', item );
     });
 
     // ON UPDATE EVENT
-    db.on.update(function(item) {
+    db.on.update(function(item){
         log( 'on.update', item );
     });
 
     // ON DELETE EVENT
-    db.on.delete(function(item) {
+    db.on.delete(function(item){
         log( 'on.delete', item );
     });
 

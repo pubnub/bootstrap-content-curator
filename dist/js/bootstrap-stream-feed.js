@@ -4,17 +4,19 @@
 // SETTINGS
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 var settings = {
-        publish_key   : 'pub-5ad63a7a-0c72-4b86-978d-960dcdb971e1'
-    ,   subscribe_key : 'sub-459a5e4a-9de6-11e0-982f-efe715a9b6b8'
-    ,   secret_key    : ''
-    ,   channel       : 'website6'
+    publish_key   : 'pub-5ad63a7a-0c72-4b86-978d-960dcdb971e1'
+,   subscribe_key : 'sub-459a5e4a-9de6-11e0-982f-efe715a9b6b8'
+,   secret_key    : 'sec-fa847381-dcdb-4bcf-a8aa-7b812c390441'
+,   cipher_key    : 'ODgwNDsmIzczMDustKOiJiM4NzM0O7aqSDNh2mig'
+,   ssl           : true
 };
 
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // INIT OBJECTS AND ELEMENTS
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-var pubnub                  = PUBNUB.init(settings)
+var db_admin                = PUBNUB.sync( 'db-admin',  settings )
+,   db_public               = PUBNUB.sync( 'db-public', settings )
 ,   push_submit             = pubnub.$('push-submit')
 ,   new_headline_area       = pubnub.$('new-headline-area')
 ,   live_posts              = pubnub.$('live-posts')
@@ -23,7 +25,6 @@ var pubnub                  = PUBNUB.init(settings)
 ,   published_template      = pubnub.$('published-template').innerHTML
 ,   curator_editor_template = pubnub.$('curator-editor-template').innerHTML
 ,   publish_edit_template   = pubnub.$('publish-edit-template').innerHTML;
-
 
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -38,104 +39,58 @@ function submit_headline() {
     var headline = push_text_area.value;
     if (!headline) return;
     push_text_area.value = '';
-    author_action( 'new', 'private', {
-        id       : PUBNUB.uuid(),
-        headline : headline
-    } );
-}
 
-
-// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-// AUTHOR ACTIONS
-// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-function author_action( action, level, data ) {
-    console.log( action, level, data )
-    pubnub.publish({
-        channel : settings.channel + '-' + level,
-        message : {
-            action : action,
-            data   : data
-        }
-    });
-}
-
-
-// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-// DATA SYNC: LIVE - "PUBLIC"
-// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-pubnub.history({
-    limit    : 100,
-    channel  : settings.channel + '-private',
-    callback : function(messages) {
-        pubnub.each( messages[0], event_processor );
-        PUBNUB.init(settings).subscribe({
-            backfill : true,
-            channel  : settings.channel + '-private',
-            message  : event_processor
-        });
-    }
-});
-
-
-// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-// DATA SYNC: ADMIN - "PRIVATE"
-// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-pubnub.history({
-    limit    : 100,
-    channel  : settings.channel + '-public',
-    callback : function(messages) {
-        pubnub.each( messages[0], event_processor );
-        PUBNUB.init(settings).subscribe({
-            backfill : true,
-            channel  : settings.channel + '-public',
-            message  : event_processor
-        });
-    }
-});
-
-function event_processor(message,b,c) {
-    PUBNUB.events.fire( 'message.' + message.action, message.data );
+    // Create NEW Headline Entry
+    db_admin.create({ headline : headline });
 }
 
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // CURATOR RECEIVE HEADLINE FOR PUBLISHING AND EDITING
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-PUBNUB.events.bind( 'message.new', function(data) {
-    delete_private(data);
+db_admin.on.change(function(item){
+    delete_private(item);
     (function(){
         var div = PUBNUB.create('div');
         new_headline_area.insertBefore( div, first_div(new_headline_area) );
         return div;
-    })().innerHTML = PUBNUB.supplant( publish_edit_template, data );
-} );
+    })().innerHTML = PUBNUB.supplant( publish_edit_template, {
+        id   : item.id
+    ,   data : item.data
+    } );
+});
 
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // RECEIVING LIVE POSTS: STREAM FEEDER!
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-PUBNUB.events.bind( 'message.publish', function(data) {
-    delete_public(data);
+db_public.on.change(function(item){
+    delete_public(item);
     (function(){
         var div = PUBNUB.create('div');
         live_posts.insertBefore( div, first_div(live_posts) );
         return div;
-    })().innerHTML = PUBNUB.supplant( published_template, data );
+    })().innerHTML = PUBNUB.supplant( published_template, {d
+        id   : item.id
+    ,   data : item.data
+    } );
 } );
 
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // RECEIVING DELETE
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-PUBNUB.events.bind( 'message.delete', delete_public );
-PUBNUB.events.bind( 'message.delete-forever', function(data) {
-    delete_public(data);
-    delete_private(data);
-} );
+db_public.on.delete(delete_public);
+db_admin.on.delete(function(item){
+    delete_public(item);
+    delete_private(item);
+});
+
 function delete_public(data) {
     var previous = PUBNUB.$('published-'+data.id);
     if (previous) live_posts.removeChild(previous.parentNode);
 }
+
 function delete_private(data) {
     var previous = PUBNUB.$(data.id);
     if (previous)
@@ -151,9 +106,10 @@ delegate( PUBNUB.$('push-edit-panel'),   'editor' );
 
 // PUBLISH
 PUBNUB.events.bind( 'editor.publish', function(event) {
+db_public.create({ headline : PUBNUB.$(event.data).innerHTML });
     author_action( 'publish', 'public', {
         id       : event.data,
-        headline : PUBNUB.$(event.data).innerHTML
+        headline : 
     } );
 } );
 

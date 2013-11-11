@@ -9,12 +9,13 @@ PUBNUB.sync = function( name, settings ) {
     ,   db           = storage().get('db-'+name)      || {}
     ,   tranlog      = storage().get('tranlog-'+name) || {}
     ,   binlog       = storage().get('binlog-'+name)  || []
-    ,   lastime      = storage().get('lastime-'+name) || 0
+    ,   lastime      = settings.start || storage().get('lastime-'+name) || 0
     ,   connected    = false
     ,   transmitting = false
     ,   self         = function() { return db }
     ,   on           = {
             create     : function() {}
+        ,   change     : function() {}
         ,   update     : function() {}
         ,   delete     : function() {}
         ,   debug      : function() {}
@@ -27,6 +28,7 @@ PUBNUB.sync = function( name, settings ) {
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.on = {
         create     : function(cb) { on.create     = cb }
+    ,   change     : function(cb) { on.change     = cb }
     ,   update     : function(cb) { on.update     = cb }
     ,   delete     : function(cb) { on.delete     = cb }
     ,   debug      : function(cb) { on.debug      = cb }
@@ -102,6 +104,7 @@ PUBNUB.sync = function( name, settings ) {
 
         // User Callbacks
         on[command](evt);
+        if (command != "delete") on.change(evt);
 
     }
 
@@ -134,6 +137,7 @@ PUBNUB.sync = function( name, settings ) {
         // Save Local DB
         storage().set( 'db-'+name, db );
         on.create(ref);
+        on.change(ref);
 
         return ref;
     };
@@ -149,9 +153,11 @@ PUBNUB.sync = function( name, settings ) {
     // UPDATE
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.update = function( id, data ) {
-        execute( 'update', merge( db[id], data ), id );
+        execute( 'update', merge( db[id]||{}, data ), id );
         storage().set( 'db-'+name, db );
-        on.update(reference(id));
+        var ref = reference(id);
+        on.update(ref);
+        on.change(ref);
     };
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
