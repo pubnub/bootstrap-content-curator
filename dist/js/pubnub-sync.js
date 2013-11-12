@@ -6,11 +6,11 @@
 PUBNUB.sync = function( name, settings ) {
     //var pubnub       = PUBNUB.secure(settings)
     var pubnub       = PUBNUB.init(settings)
-    ,   startat      = (settings.start || 0) * 10000
+    ,   start_at     = (settings.start || 0) * 10000
     ,   db           = storage().get('db-'+name)      || {}
     ,   tranlog      = storage().get('tranlog-'+name) || {}
     ,   binlog       = storage().get('binlog-'+name)  || []
-    ,   lastime      =  || storage().get('lastime-'+name) || 0
+    ,   lastime      = start_at || storage().get('lastime-'+name) || 0
     ,   connected    = false
     ,   transmitting = false
     ,   self         = function() { return db }
