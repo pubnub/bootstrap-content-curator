@@ -45,7 +45,7 @@ PUBNUB.sync = function( name, settings ) {
         sync_binlog({
             net      : pubnub
         ,   channel  : name
-        ,   limit    : settings.limit || 5000
+        ,   limit    : settings.limit || 10000
         ,   start    : lastime
         ,   callback : function( evts, timetoken ) {
                 pubnub.subscribe({
@@ -110,6 +110,15 @@ PUBNUB.sync = function( name, settings ) {
     }
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // ALL: Iterator
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    self.all = function(cb) {
+        PUBNUB.each( db, function( id, data ) {
+            cb({ id : id, data : data });
+        } );
+    };
+
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // DESTROY SELF: Totally Start Over
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.destroy = function() {
@@ -130,8 +139,8 @@ PUBNUB.sync = function( name, settings ) {
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // CREATE
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    self.create = function(data) {
-        var id = execute( 'create', data );
+    self.create = function( data, id ) {
+        var id = execute( 'create', data, id );
         db[id] = data;
         var ref = reference(id);
 
@@ -174,8 +183,11 @@ PUBNUB.sync = function( name, settings ) {
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // DELETE_ALL
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    self.delete_all = function() {
+    self.delete_all = function(cb) {
         PUBNUB.each( db, self.delete );
+        storage().set( 'db-'+name, db={} );
+
+        (cb||function(){})();
     };
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -294,7 +306,7 @@ function sync_binlog(args) {
 
         // if done then call last user cb
         if ( binlog.length >= limit ||
-             msgs.length    < count
+             msgs.length   <  count
         ) return callback( binlog, start );
 
         fetch_binlog();
