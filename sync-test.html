@@ -54,6 +54,9 @@
         log( 'on.delete', item );
     });
 
+    // TEST RECORD TOO LARGE
+    log(!db.create({ key : new Array(1000).join('0123456789') }));
+
     // CREATE
     var obj1 = db.create({ key : +new Date })
     ,   obj2 = db.create({ key : +new Date })

@@ -140,6 +140,11 @@ PUBNUB.sync = function( name, settings ) {
     // CREATE
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     self.create = function( data, id ) {
+        if (record_too_large(data)) {
+            on.debug('ALERT: Record Too Large');
+            return false;
+        }
+
         var id = execute( 'create', data, id );
         db[id] = data;
         var ref = reference(id);
@@ -234,6 +239,13 @@ PUBNUB.sync = function( name, settings ) {
         commit();
 
         return id;
+    }
+
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    // Record Too Large
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    function record_too_large(message) {
+        return encodeURIComponent(JSON.stringify(message)).length > 7000;
     }
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
