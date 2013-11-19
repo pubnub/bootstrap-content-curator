@@ -52,7 +52,6 @@ db_admin.on.change(admin_update);
 db_admin.all(admin_update);
 
 function admin_update(item) {
-    console.log(item);
     delete_private(item);
     (function(){
         var div = PUBNUB.create('div');
@@ -72,7 +71,6 @@ db_public.on.change(public_update);
 db_public.all(public_update);
 
 function public_update(item) {
-    console.log(item);
     delete_public(item);
     (function(){
         var div = PUBNUB.create('div');
@@ -114,7 +112,6 @@ delegate( PUBNUB.$('push-edit-panel'),   'editor' );
 
 // PUBLISH
 PUBNUB.events.bind( 'editor.publish', function(event) {
-    console.log("!!!!!!!!!!!!",{ headline : PUBNUB.$(event.data).innerHTML });
     db_public.create(
         { headline : PUBNUB.$(event.data).innerHTML },
         event.data
