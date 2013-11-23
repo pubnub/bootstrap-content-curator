@@ -63,7 +63,7 @@ function admin_update(item) {
         return div;
     })().innerHTML = PUBNUB.supplant( publish_edit_template, {
         id       : item.id
-    ,   headline : item.data.headline
+    ,   headline : safe(item.data.headline)
     } );
 }
 
@@ -86,7 +86,7 @@ function public_update(item) {
         return div;
     })().innerHTML = PUBNUB.supplant( published_template, {
         id       : item.id
-    ,   headline : item.data.headline
+    ,   headline : safe(item.data.headline)
     } );
 }
 
