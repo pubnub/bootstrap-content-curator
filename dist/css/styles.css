@@ -51,6 +51,17 @@ h2 {
     display: none;
 }
 
+.lead-icon-heading-right,
+.lead-icon-heading {
+    margin: 0;
+    margin-top: 100px;
+    font-size: 300px;
+    line-height: 0px;
+}
+.lead-icon-heading-right {
+    text-align: right;
+}
+
 /* Featurettes
 ------------------------- */
 

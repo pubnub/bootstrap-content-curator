@@ -19,7 +19,9 @@
         <ul class="nav navbar-nav navbar-right">
             <li><a href="#get-started">Get Started</a></li>
             <li><a href="#get-started">DataSync Docs</a></li>
-            <li><a href="#contact">View on GitHub</a></li>
+            <li><a href="https://github.com/stephenlb/bootstrap-stream-feeder">
+                View on GitHub
+            </a></li>
             <li><a href="#contact">Bug Report</a></li>
         </ul>
     </div>
@@ -88,13 +90,36 @@
                     This will send your headlines
                     to the editor for
                     <strong>Publishing and Editing</strong>.
-                </small></p>
-                <p><small>
-                    In code this will execute
-                    <code>db.create({ headline : "..." })</code>
+                </small></p><p><small>
+                    <h2>How DataSync Works in the Code</h2>
+                    By pressing <strong>submit</strong>
+                    this will execute as follows code:
+                </small></p><p><small>
+                    <code>var item = db.create({ headline : "..." })</code>
+                </small></p><p><small>
                     and therefore write a new db row entry
-                    onto the <strong>Staging Editor Database</strong>.
+                    onto the <strong>Editor Database</strong>.
+                    Next the editor will update the entry as needed:
+                </small></p><p><small>
+                    <code>item.update({ headline : "..." })</code>
+                </small></p><p><small>
+                    Both <code>db.create()</code> and <code>itme.update()</code>
+                    will save the changes in memory,
+                    on your local disk and to the cloud all at the same time.
+                    Once you re-connect to the database, any untransmitted changes
+                    are sent to the device to <strong>sync data</strong>
+                    in real-time.
+                </small></p><p><small>
+                    Finally to publish simply write to a second DB,
+                    a public facing DB, that can be used for read-only updates.
+                </small></p><p><small>
+                    <code>db2.create({ headline : item.headline })</code>
+                </small></p><p><small>
+                    That's it for now with the intro tutorial.
+                    To learn more continue down this document
+                    for further reading.
                 </small></p>
+
             </div>
             <div class="col-lg-4">
                 <h2>
@@ -203,7 +228,7 @@
             <span class="text-muted">See for yourself.</span>
           </h2>
           <p class="lead">
-              Guaranteed DB Sync to Mobile and Web Clients
+              Guaranteed DataSync to Mobile and Web Clients
               Dramatically simplifies app development.
               <strong>Schema-less NoSQL</strong>
               offers easy data entry
@@ -211,6 +236,9 @@
           </p>
         </div>
         <div class="col-md-5">
+          <p class="lead-icon-heading-right">
+            <span class="glyphicon glyphicon-cloud-download"></span>
+          </p>
         </div>
       </div>
     </div>
@@ -218,7 +246,9 @@
     <div class="container">
       <div class="row featurette">
         <div class="col-md-5">
-          <img class="featurette-image img-responsive">
+          <p class="lead-icon-heading">
+            <span class="glyphicon glyphicon-dashboard"></span>
+          </p>
         </div>
         <div class="col-md-7">
           <h2 class="featurette-heading">
@@ -285,9 +315,6 @@
                 <li class="list-group-item">viewer embed code</li>
                 <li class="list-group-item">editor settings</li>
                 <li class="list-group-item">analytics</li>
-                <li class="list-group-item">xss inject prevent</li>
-                <li class="list-group-item">xss inject prevent</li>
-                <li class="list-group-item">xss inject prevent</li>
                 <li class="list-group-item">previewer</li>
                 <li class="list-group-item"></li>
                 <li class="list-group-item">doc: max reflog</li>
@@ -311,7 +338,7 @@
                 <li class="list-group-item">multiple display opts</li>
                 <li class="list-group-item">works on all mobile/web</li>
                 <li class="list-group-item">Examples</li>
-                <li class="list-group-item"></li>
+                <li class="list-group-item">add CONFirmation for PUSH</li>
                 <li class="list-group-item"></li>
                 <li class="list-group-item"></li>
                 <li class="list-group-item"></li>
@@ -439,6 +466,7 @@
 
 <script src="https://pubnub.a.ssl.fastly.net/pubnub.min.js"></script>
 <script src="https://pubnub.a.ssl.fastly.net/pubnub-crypto.min.js"></script>
+<script src="dist/js/animate.js"></script>
 <script src="dist/js/pubnub-sync.js"></script>
 <script src="dist/js/bootstrap-stream-feed.js"></script>
 

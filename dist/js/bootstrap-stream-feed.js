@@ -36,7 +36,7 @@ PUBNUB.bind( 'keyup', push_text_area, function(e) {
 } );
 
 function submit_headline() {
-    var headline = push_text_area.value;
+    var headline = safe(push_text_area.value||'');
     if (!headline) return;
     push_text_area.value = '';
 
@@ -75,6 +75,10 @@ function public_update(item) {
     (function(){
         var div = PUBNUB.create('div');
         live_posts.insertBefore( div, first_div(live_posts) );
+        animate( div, [
+            { 'd' : 0.1, 's' : 1.1, 'ty' : -10 },
+            { 'd' : 0.5, 's' : 1.0, 'ty' : 0 }
+        ] );
         return div;
     })().innerHTML = PUBNUB.supplant( published_template, {
         id       : item.id
@@ -147,7 +151,7 @@ PUBNUB.events.bind( 'editor.save', function(event) {
 
     db_admin.update(
         event.data,
-        { headline : PUBNUB.$('push-text-edit-area').value }
+        { headline : safe(PUBNUB.$('push-text-edit-area').value) }
     );
 } );
 
@@ -184,5 +188,6 @@ function bubblefind( e, attr ) {
 }
 
 function first_div(elm) { return elm.getElementsByTagName('div')[0] }
+function safe(text)     { return (text||'').replace( /[<>]/g, '' )  }
 
 })();
