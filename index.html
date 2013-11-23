@@ -63,6 +63,14 @@
                 <h2>
                     1. Reporter
                     &nbsp;<span class="glyphicon glyphicon-pencil"></span>
+                    &nbsp;<button
+                        type="button"
+                        class="btn btn-default btn-sm"
+                    >
+                        Admin Settings
+                        &nbsp;<span
+                        class="glyphicon glyphicon-cog"></span>
+                    </button>
                 </h2>
                 <div class="panel panel-primary"></div>
 
@@ -83,6 +91,7 @@
                 </div>
 
                 <!-- UI INPUT DESCRIPTION -->
+
                 <p><br><small>
                     Write a text headline then press
                     <strong>"Submit"</strong>
@@ -90,10 +99,20 @@
                     This will send your headlines
                     to the editor for
                     <strong>Publishing and Editing</strong>.
-                </small></p><p><small>
-                    <h2>How DataSync Works in the Code</h2>
+                </small></p>
+
+            <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title">How DataSync Works in the Code</h3>
+            </div>
+            <div class="panel-body">
+                <p><small>
                     By pressing <strong>submit</strong>
-                    this will execute as follows code:
+                    does something very powerful in many synchronous steps
+                    that placing an amazing new DataSync capability
+                    at your fingertips faster than ever before.
+                    When you press the <strong>submit</strong> button,
+                    the code will execute as follows:
                 </small></p><p><small>
                     <code>var item = db.create({ headline : "..." })</code>
                 </small></p><p><small>
@@ -104,8 +123,9 @@
                     <code>item.update({ headline : "..." })</code>
                 </small></p><p><small>
                     Both <code>db.create()</code> and <code>itme.update()</code>
-                    will save the changes in memory,
-                    on your local disk and to the cloud all at the same time.
+                    will save the changes in <strong>memory</strong>,
+                    on your <strong>local disk</strong> and to the
+                    <strong>cloud</strong> all at the same time.
                     Once you re-connect to the database, any untransmitted changes
                     are sent to the device to <strong>sync data</strong>
                     in real-time.
@@ -119,6 +139,7 @@
                     To learn more continue down this document
                     for further reading.
                 </small></p>
+            </div></div>
 
             </div>
             <div class="col-lg-4">
@@ -309,12 +330,12 @@
         <div class="col-lg-6">
             <h3>Bootstrap Content Feeder TODO</h3>
             <ul class="list-group">
+                <li class="list-group-item">add ordering</li>
                 <li class="list-group-item">Reload config dynamic</li>
                 <li class="list-group-item">setup form api key</li>
                 <li class="list-group-item">code snippets</li>
                 <li class="list-group-item">viewer embed code</li>
                 <li class="list-group-item">editor settings</li>
-                <li class="list-group-item">analytics</li>
                 <li class="list-group-item">previewer</li>
                 <li class="list-group-item"></li>
                 <li class="list-group-item">doc: max reflog</li>
@@ -334,7 +355,6 @@
                 <li class="list-group-item">Security w/ Options</li>
                 <li class="list-group-item">perm-ses, pass, sec, acl</li>
                 <li class="list-group-item">footer/PubNub</li>
-                <li class="list-group-item">animation</li>
                 <li class="list-group-item">multiple display opts</li>
                 <li class="list-group-item">works on all mobile/web</li>
                 <li class="list-group-item">Examples</li>
