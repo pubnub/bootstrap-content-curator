@@ -14,15 +14,23 @@
     <div id="wrap"><div class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Bootstrap Content Feeder</a>
+            <a
+                class="navbar-brand"
+                target="pubnubwebsite"
+                href="http://www.pubnub.com/"
+            >Bootstrap Content Feeder by PubNub</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="#get-started">Get Started</a></li>
-            <li><a href="#get-started">DataSync Docs</a></li>
+            <li><a href="#datasync-docs">DataSync Docs</a></li>
             <li><a href="https://github.com/stephenlb/bootstrap-stream-feeder">
                 View on GitHub
             </a></li>
-            <li><a href="#contact">Bug Report</a></li>
+            <li><a
+            target="bugreport"
+            href="https://github.com/stephenlb/bootstrap-stream-feeder/issues/new"
+            >Bug Report</a>
+            </li>
         </ul>
     </div>
     </div></div>
@@ -44,7 +52,7 @@
             </p>
             <p><a
                 class="btn btn-lg btn-info"
-                href="#"
+                href="#get-started"
                 role="button"
             >Get Started</a></p>
         </div>
@@ -60,7 +68,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-4">
-                <h2>
+                <h2 id="get-started">
                     1. Reporter
                     &nbsp;<span class="glyphicon glyphicon-pencil"></span>
                     &nbsp;<button
@@ -316,19 +324,61 @@
 
     <!-- DOCUMENTATION -->
     <div class="container">
-        <h2>Documentation for DataSync CRUD</h2>
+        <h2 id="datasync-docs">Documentation for Real-time DataSync SDK</h2>
+        <div class="well well-g">
+            The following is documentation for a Real-time Network
+            DataSync System built for optimal performance on mobile
+            connections and unreliable environments.
+            Because of the full resiliency and high availability of
+            the network, you can always have certainty your data is sync'ed.
+            This SDK docs will describe API usage and considerations
+            when invoking each method provided.
+        </div>
+
+        <!-- INIT (SYNC) -->
         <div class="row">
             <div class="col-lg-6">
                 <div class="panel panel-primary"><div class="panel-heading">
-                    <h3 class="panel-title"><code>db.create({})</code></h3>
+                    <h3 class="panel-title">
+                        <code>PUBNUB.sync()</code> - Initiate DB Connection
+                    </h3>
                 </div>
                 <div class="panel-body">
                     Panel content
                 </div></div>
             </div>
             <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">
+                        DataSync starts with an always-on Socket Connection
+                    </h3></div>
+                    <div class="panel-body">
+                        Panel content
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CREATE (WRITE) -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-success"><div class="panel-heading">
+                    <h3 class="panel-title">
+                        <code>db.create({})</code> - Insert New Item
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    Panel content
+                </div></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
                 <div class="panel panel-info"><div class="panel-heading">
-                    <h3 class="panel-title"><code>db.read(id)</code></h3>
+                    <h3 class="panel-title">
+                        <code>db.read(id)</code> - Read Item from DB
+                    </h3>
                 </div>
                 <div class="panel-body">
                     Panel content
@@ -339,15 +389,22 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="panel panel-warning"><div class="panel-heading">
-                    <h3 class="panel-title"><code>db.update({})</code></h3>
+                    <h3 class="panel-title">
+                        <code>db.update({})</code> - Update and Replace Items
+                    </h3>
                 </div>
                 <div class="panel-body">
                     Panel content
                 </div></div>
             </div>
+        </div>
+
+        <div class="row">
             <div class="col-lg-6">
                 <div class="panel panel-danger"><div class="panel-heading">
-                    <h3 class="panel-title"><code>db.delete(id)</code></h3>
+                    <h3 class="panel-title">
+                        <code>db.delete(id)</code> - Delete Items Forever
+                    </h3>
                 </div>
                 <div class="panel-body">
                     Panel content
