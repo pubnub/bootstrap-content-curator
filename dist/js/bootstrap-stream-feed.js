@@ -55,6 +55,10 @@ function admin_update(item) {
     delete_private(item);
     (function(){
         var div = PUBNUB.create('div');
+        animate( div, [
+            { 'd' : 0.1, 'opacity' : 0.0, 'ty' : -10 },
+            { 'd' : 0.5, 'opacity' : 1.0, 'ty' : 0 }
+        ] );
         new_headline_area.insertBefore( div, first_div(new_headline_area) );
         return div;
     })().innerHTML = PUBNUB.supplant( publish_edit_template, {
@@ -74,11 +78,11 @@ function public_update(item) {
     delete_public(item);
     (function(){
         var div = PUBNUB.create('div');
-        live_posts.insertBefore( div, first_div(live_posts) );
         animate( div, [
-            { 'd' : 0.1, 's' : 1.1, 'ty' : -10 },
-            { 'd' : 0.5, 's' : 1.0, 'ty' : 0 }
+            { 'd' : 0.1, 'opacity' : 0.0, 'ty' : -10 },
+            { 'd' : 0.5, 'opacity' : 1.0, 'ty' : 0 }
         ] );
+        live_posts.insertBefore( div, first_div(live_posts) );
         return div;
     })().innerHTML = PUBNUB.supplant( published_template, {
         id       : item.id
