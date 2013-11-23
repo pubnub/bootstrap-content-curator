@@ -99,7 +99,6 @@
                 </div>
 
                 <!-- UI INPUT DESCRIPTION -->
-
                 <p><br><small>
                     Write a text headline then press
                     <strong>"Submit"</strong>
@@ -111,7 +110,9 @@
 
             <div class="panel panel-warning">
             <div class="panel-heading">
-                <h3 class="panel-title">How DataSync Works in the Code</h3>
+                <h3 class="panel-title">
+                    How DataSync Works in the Source Code
+                </h3>
             </div>
             <div class="panel-body">
                 <p><small>
@@ -322,7 +323,7 @@
       </div>
     </div>
 
-    <!-- DOCUMENTATION -->
+    <!-- DOCUMENTATION PART 1 -->
     <div class="container">
         <h2 id="datasync-docs">Documentation for Real-time DataSync SDK</h2>
         <div class="well well-g">
@@ -340,11 +341,22 @@
             <div class="col-lg-6">
                 <div class="panel panel-primary"><div class="panel-heading">
                     <h3 class="panel-title">
-                        <code>PUBNUB.sync()</code> - Initiate DB Connection
+                        Initiate DB Connection &nbsp;
+                        <code>PUBNUB.sync()</code>
                     </h3>
                 </div>
                 <div class="panel-body">
-                    Panel content
+<pre>
+var settings = {
+    publish_key   : 'pub-5ad63a7a-0c72-4b86-978d-960dcdb971e1'
+,   subscribe_key : 'sub-459a5e4a-9de6-11e0-982f-efe715a9b6b8'
+,   secret_key    : 'sec-fa847381-dcdb-4bcf-a8aa-7b812c390441'
+,   cipher_key    : 'ODgwNDsmIzczMDustKOiJiM4NzM0O7aqSDNh2mig'
+,   ssl           : true
+};
+
+var db = PUBNUB.sync( 'db_name', settings );
+</pre>
                 </div></div>
             </div>
             <div class="col-lg-6">
@@ -364,54 +376,148 @@
             <div class="col-lg-6">
                 <div class="panel panel-success"><div class="panel-heading">
                     <h3 class="panel-title">
-                        <code>db.create({})</code> - Insert New Item
+                        Insert New Item &nbsp; 
+                        <code>db.create({})</code>
                     </h3>
                 </div>
                 <div class="panel-body">
-                    Panel content
+<pre>
+var item = db.create({ headline : "my header text" });
+console.log(item.id);
+</pre>
                 </div></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">
+                        DataSync starts with an always-on Socket Connection
+                    </h3></div>
+                    <div class="panel-body">
+                        Panel content
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!-- READ (GET) -->
         <div class="row">
             <div class="col-lg-6">
                 <div class="panel panel-info"><div class="panel-heading">
                     <h3 class="panel-title">
-                        <code>db.read(id)</code> - Read Item from DB
+                        Read Item from DB &nbsp;
+                        <code>db.read(id)</code>
                     </h3>
                 </div>
                 <div class="panel-body">
-                    Panel content
+<pre>
+var item = db.read(id);
+console.log(item);
+</pre>
                 </div></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">
+                        DataSync starts with an always-on Socket Connection
+                    </h3></div>
+                    <div class="panel-body">
+                        tesxt.
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!-- UPDATE (CHANGE) -->
         <div class="row">
             <div class="col-lg-6">
                 <div class="panel panel-warning"><div class="panel-heading">
                     <h3 class="panel-title">
-                        <code>db.update({})</code> - Update and Replace Items
+                        Update and Replace Items &nbsp;
+                        <code>item.update({})</code>
                     </h3>
                 </div>
                 <div class="panel-body">
-                    Panel content
+<pre>
+// option 1
+item.update({ headline : "some updated value" });
+console.log(item);
+
+// option 2
+db.update( item.id, { headline : "some updated value" } );
+console.log(item);
+</pre>
                 </div></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">
+                        DataSync starts with an always-on Socket Connection
+                    </h3></div>
+                    <div class="panel-body">
+                        Panel content
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!-- DELETE (REMOVE) -->
         <div class="row">
             <div class="col-lg-6">
                 <div class="panel panel-danger"><div class="panel-heading">
                     <h3 class="panel-title">
-                        <code>db.delete(id)</code> - Delete Items Forever
+                        Delete Items Forever &nbsp;
+                        <code>item.delete()</code>
                     </h3>
                 </div>
                 <div class="panel-body">
-                    Panel content
+<pre>
+// option 1
+item.delete();
+
+// option 2
+db.delete(item.id);
+</pre>
                 </div></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">
+                        DataSync starts with an always-on Socket Connection
+                    </h3></div>
+                    <div class="panel-body">
+                        ...
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- DOCUMENTATION PART 2 -->
+    <div class="container">
+        <h2 id="datasync-docs">Listen for Real-time DataSync Events</h2>
+        <div class="well well-g">
+            You'll need a way to monitor and act upon changes that occur
+            remotely or on catch-up phases.
+            The best way to do this is by registering an event
+            listener on the events in which you find the most interesting
+            to minitor in real-time.
+        </div>
+    </div>
+
+    <!-- DOCUMENTATION PART 3 -->
+    <div class="container">
+        <h2 id="datasync-docs">
+            Server-side APIs for Real-time DataSync
+        </h2>
+        <div class="well well-g">
+            You'll need a way to monitor and act upon changes that occur
+            remotely or on catch-up phases.
+            The best way to do this is by registering an event
+            listener on the events in which you find the most interesting
+            to minitor in real-time.
+        </div>
+    </div>
+
 
     <div class="container"><div class="row">
         <div class="col-lg-6">
