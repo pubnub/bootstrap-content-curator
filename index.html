@@ -608,7 +608,7 @@ db.delete(item.id);
             remotely or on catch-up phases.
             The best way to do this is by registering an event
             listener on the events in which you find the most interesting
-            to minitor in real-time.
+            to monitor in real-time.
         </div>
 
         <!-- ON CREATE -->
@@ -721,13 +721,198 @@ db.on.delete(function(item){
             Server-side APIs for Real-time DataSync
         </h2>
         <div class="well well-g">
-            You'll need a way to monitor and act upon changes that occur
-            remotely or on catch-up phases.
-            The best way to do this is by registering an event
-            listener on the events in which you find the most interesting
-            to minitor in real-time.
+            Due to the difficulty to cope with
+            the kind of volumes of data we
+            need to broadcast real-time while
+            keeping a reliable service,
+            using the services of PubNub Real-time Network
+            to stream real-time data is needed.
+
+            PubNub Real-time Nework provides SDKs in various languages:
+            <a href="http://www.pubnub.com/developers">
+            http://www.pubnub.com/developers</a>.
         </div>
     </div>
+
+
+
+
+
+    <!-- PYTHON -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-danger"><div class="panel-heading">
+                    <h3 class="panel-title">
+                        Python Usage
+                    </h3>
+                </div>
+                <div class="panel-body">
+<pre>
+from Pubnub import Pubnub
+import uuid
+
+## Initiate Class
+pubnub = Pubnub(
+    publish_key=publish_key,
+    subscribe_key=subscribe_key,
+    secret_key=secret_key,
+    cipher_key=cipher_key,
+    ssl_on=ssl_on
+)
+
+## Create
+item_id = str(uuid.uuid4())
+info = pubnub.publish({
+    'channel' : 'db-public',
+    'message' : {
+        'id'      : item_id,
+        'domain'  : 'server',
+        'command' : 'create',
+        'data'    : {'headline':'sample'}
+    }
+})
+print(info)
+
+## Update
+info = pubnub.publish({
+    'channel' : 'db-public',
+    'message' : {
+        'id'      : item_id,
+        'domain'  : 'server',
+        'command' : 'update',
+        'data'    : {'headline':'updated!'}
+    }
+})
+print(info)
+
+## Delete
+info = pubnub.publish({
+    'channel' : 'db-public',
+    'message' : {
+        'id'      : item_id,
+        'domain'  : 'server',
+        'command' : 'delete'
+    }
+})
+print(info)
+</pre>
+                </div></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">
+                        Python Setup
+                    </h3></div>
+                    <div class="panel-body">
+                        sudo pip install pubnub
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHP -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-danger"><div class="panel-heading">
+                    <h3 class="panel-title">
+                        PHP Usage
+                    </h3>
+                </div>
+                <div class="panel-body">
+<pre>
+
+&lt;?php
+require_once('Pubnub.php');
+
+$pubnub = new Pubnub(
+    publish_key,
+    subscribe_key,
+    secret_key,
+    cipher_key,
+    ssl_on
+);
+
+## Create Row
+$pubnub-&gt;publish(array(
+    'channel' =&gt; 'testChannel',
+    'message' =&gt; array(
+        'id'      =&gt; $item_id,
+        'domain'  =&gt; 'server',
+        'command' =&gt; 'create',
+        'data'    =&gt; array( 'headline' =&gt; 'sample' )
+    )
+));
+
+## Update Row
+$pubnub-&gt;publish(array(
+    'channel' =&gt; 'testChannel',
+    'message' =&gt; array(
+        'id'      =&gt; $item_id,
+        'domain'  =&gt; 'server',
+        'command' =&gt; 'update',
+        'data'    =&gt; array( 'headline' =&gt; 'updated!' )
+    )
+));
+
+## Delete Row
+$pubnub-&gt;publish(array(
+    'channel' =&gt; 'testChannel',
+    'message' =&gt; array(
+        'id'      =&gt; $item_id,
+        'domain'  =&gt; 'server',
+        'command' =&gt; 'delete'
+    )
+));
+
+function uuid() {
+    if (function_exists('com_create_guid') === true) {
+        return trim(com_create_guid(), '{}');
+    }
+    return sprintf( '%04X%04X-%04X-%04X-%04X-%04X%04X%04X',
+        mt_rand(0, 65535),
+        mt_rand(0, 65535),
+        mt_rand(0, 65535),
+        mt_rand(16384, 20479),
+        mt_rand(32768, 49151),
+        mt_rand(0, 65535),
+        mt_rand(0, 65535),
+        mt_rand(0, 65535)
+    );
+}
+?&gt;
+</pre>
+                </div></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">
+                        PHP Setup
+                    </h3></div>
+                    <div class="panel-body">
+                        <p>
+                            Grab the files from GitHub:
+                            <a href="https://github.com/pubnub/php/">
+                                PubNub PHP Libraries
+                            </a>
+                        </p>
+                        <small>
+                        curl https://raw.github.com/pubnub/php/master/3.4/PubnubAES.php &gt; PubnubAES.php
+                        <br>
+                        curl https://raw.github.com/pubnub/php/master/3.4/Pubnub.php &gt; Pubnub.php
+                        </small>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
 
 
     <div class="container"><div class="row">
@@ -776,6 +961,10 @@ db.on.delete(function(item){
                 <li class="list-group-item">viewer embed code</li>
                 <li class="list-group-item">editor settings</li>
                 <li class="list-group-item">previewer</li>
+                <li class="list-group-item"></li>
+                <li class="list-group-item"></li>
+                <li class="list-group-item">dev-console link direct</li>
+                <li class="list-group-item"></li>
                 <li class="list-group-item"></li>
                 <li class="list-group-item">doc: max reflog</li>
                 <li class="list-group-item"></li>
