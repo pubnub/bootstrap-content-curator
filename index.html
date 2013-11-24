@@ -73,6 +73,35 @@
     </div>
     -->
 
+
+    <div id="embed-code" class="container">
+        <div class="row">
+            <div class="col-lg-12">
+<pre>
+&lt;!-- EMBED CODE FOR VIEWER --&gt;
+&lt;script src="http://cdn.pubnub.com/pubnub.min.js"&gt;&lt;/script&gt;
+&lt;script src="http://cdn.pubnub.com/pubnub-crypto.min.js"&gt;&lt;/script&gt;
+&lt;script src="http://stephenlb.github.io/bootstrap-stream-feeder/dist/js/pubnub-sync.js"&gt;&lt;/script&gt;
+&lt;script&gt;(function(){
+    var settings = {
+        subscribe_key : 'sub-459a5e4a-9de6-11e0-982f-efe715a9b6b8'
+    ,   cipher_key    : 'ODgwNDsmIzczMDustKOiJiM4NzM0O7aqSDNh2mig'
+    ,   ssl           : true
+    };
+
+    var db = PUBNUB.sync( 'db-public', settings );
+
+    db.all(function(item){       /* -- render all items -- */ });
+    db.on.create(function(item){ /* -- render new item  -- */ });
+    db.on.update(function(item){ /* -- update item      -- */ });
+    db.on.delete(function(item){ /* -- remove item      -- */ });
+})();&lt;/script&gt;
+</pre>
+
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="row">
             <div class="col-lg-4">
@@ -176,6 +205,7 @@
                     &nbsp;<span class="glyphicon glyphicon-eye-open"></span>
 
                     &nbsp;<button
+                        id="embed-code-button"
                         type="button"
                         class="btn btn-default btn-sm"
                     >
@@ -461,17 +491,24 @@ console.log(item.id);
                         <code>db.read(id)</code>
                         and
                         <code>db.find({})</code>
+                        and
+                        <code>db.all()</code>
                     </h3>
                 </div>
                 <div class="panel-body">
 <pre>
-// option 1
+// option 1 - get one item in DB
 var item = db.read(id);
 console.log(item);
 
-// option 2
+// option 2 - find items in DB
 var items = db.find({ headline : "match" });
 console.log(items);
+
+// option 3 - print all items in DB
+var items = db.all(function(item){
+    console.log(item);
+});
 </pre>
                 </div></div>
             </div>

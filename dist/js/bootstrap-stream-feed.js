@@ -19,12 +19,26 @@ var db_admin                = PUBNUB.sync( 'db-admin',  settings )
 ,   db_public               = PUBNUB.sync( 'db-public', settings )
 ,   push_submit             = PUBNUB.$('push-submit')
 ,   new_headline_area       = PUBNUB.$('new-headline-area')
+,   embed_code              = PUBNUB.$('embed-code')
+,   embed_code_button       = PUBNUB.$('embed-code-button')
 ,   live_posts              = PUBNUB.$('live-posts')
 ,   push_text_area          = PUBNUB.$('push-text-area')
 ,   push_edit_panel         = PUBNUB.$('push-edit-panel')
 ,   published_template      = PUBNUB.$('published-template').innerHTML
 ,   curator_editor_template = PUBNUB.$('curator-editor-template').innerHTML
 ,   publish_edit_template   = PUBNUB.$('publish-edit-template').innerHTML;
+
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+// VIEW EMBED CODE
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+PUBNUB.bind( 'mousedown,touchstart', embed_code_button, function() {
+    animate( embed_code, [
+        { 'd' : 0.1, 'opacity' : 0.0, 'ty' : -10, 'display' : 'block' },
+        { 'd' : 0.5, 'opacity' : 1.0, 'ty' : 0,   'display' : 'block' }
+    ] );
+    location.href = "#embed-code";
+} );
 
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

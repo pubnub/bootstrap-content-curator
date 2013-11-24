@@ -76,6 +76,10 @@ h2 {
     text-align: right;
 }
 
+#embed-code {
+    display : none;
+}
+
 /* Featurettes
 ------------------------- */
 
