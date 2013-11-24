@@ -5,7 +5,6 @@
  - Register For API Keys: [Signup/Login to PubNub Admin Portal](https://admin.pubnub.com/)
 
 ```html
-<!-- EMBED CODE FOR VIEWER -->
 <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
 <script src="http://cdn.pubnub.com/pubnub-crypto.min.js"></script>
 <script src="http://stephenlb.github.io/bootstrap-stream-feeder/dist/js/pubnub-sync.js"></script>
@@ -18,6 +17,7 @@
     ,   ssl           : true
     };
 
+    // Connect to DataSync DB
     var db = PUBNUB.sync( 'db-admin', settings );
 
     // View All Items in DB
