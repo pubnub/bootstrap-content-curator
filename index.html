@@ -610,7 +610,110 @@ db.delete(item.id);
             listener on the events in which you find the most interesting
             to minitor in real-time.
         </div>
+
+        <!-- ON CREATE -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-success"><div class="panel-heading">
+                    <h3 class="panel-title">
+                        OnCreate
+                        <code>db.on.create()</code>
+                    </h3>
+                </div>
+                <div class="panel-body">
+<pre>
+db.on.create(function(item){
+    console.log(item);
+});
+</pre>
+                </div></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">
+                        Create Event
+                    </h3></div>
+                    <div class="panel-body">
+                        When a new inster event is triggered,
+                        whether locally or remotely,
+                        this callback will be fired for you.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ON UPDATE -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-warning"><div class="panel-heading">
+                    <h3 class="panel-title">
+                        OnUpdate
+                        <code>db.on.update()</code>
+                    </h3>
+                </div>
+                <div class="panel-body">
+<pre>
+db.on.update(function(item){
+    console.log(item);
+});
+</pre>
+                </div></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">
+                        Update Event
+                    </h3></div>
+                    <div class="panel-body">
+                        When an item changes,
+                        whether locally or remotely,
+                        you can catch the changes
+                        by supplying your callback for the db.on.update()
+                        callback register.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ON DELETE -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-danger"><div class="panel-heading">
+                    <h3 class="panel-title">
+                        OnDelete
+                        <code>db.on.delete()</code>
+                    </h3>
+                </div>
+                <div class="panel-body">
+<pre>
+db.on.delete(function(item){
+    console.log(item);
+});
+</pre>
+                </div></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">
+                        Delete Event
+                    </h3></div>
+                    <div class="panel-body">
+                        The Delete Event is fired and executes the
+                        callback function you provide.
+                        The <strong>item</strong> argument is the full
+                        item row that has been deleted.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
+
+
+
+
+
 
     <!-- DOCUMENTATION PART 3 -->
     <div class="container">
