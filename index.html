@@ -828,11 +828,11 @@ print(info)
 require_once('Pubnub.php');
 
 $pubnub = new Pubnub(
-    publish_key,
-    subscribe_key,
-    secret_key,
-    cipher_key,
-    ssl_on
+    $publish_key,
+    $subscribe_key,
+    $secret_key,
+    $cipher_key,
+    $ssl_on
 );
 
 ## Create Row
