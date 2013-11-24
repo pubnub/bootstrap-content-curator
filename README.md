@@ -1,8 +1,8 @@
 # PubNub DataSync SDK with Boostrap Content Feeder Demo
 
- - See Demo Live: [http://stephenlb.github.io/bootstrap-stream-feeder/](Bootstrap Content Feeder)
- - Read the Full Docs: [http://stephenlb.github.io/bootstrap-stream-feeder/#datasync-docs](Bootstrap Content Feeder DataSync SDK Documentation)
- - Register For API Keys: [https://admin.pubnub.com/](Signup/Login to PubNub Admin Portal)
+ - See Demo Live: [Bootstrap Content Feeder](http://stephenlb.github.io/bootstrap-stream-feeder/)
+ - Read the Full Docs: [Bootstrap Content Feeder DataSync SDK Documentation](http://stephenlb.github.io/bootstrap-stream-feeder/#datasync-docs)
+ - Register For API Keys: [Signup/Login to PubNub Admin Portal](https://admin.pubnub.com/)
 
 ```html
 <!-- EMBED CODE FOR VIEWER -->
