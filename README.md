@@ -2,6 +2,7 @@
 
  - See Demo Live: [http://stephenlb.github.io/bootstrap-stream-feeder/](Bootstrap Content Feeder)
  - Read the Full Docs: [http://stephenlb.github.io/bootstrap-stream-feeder/#datasync-docs](Bootstrap Content Feeder DataSync SDK Documentation)
+ - Register For API Keys: [https://admin.pubnub.com/](Signup/Login to PubNub Admin Portal)
 
 ```html
 <!-- EMBED CODE FOR VIEWER -->
