@@ -21,15 +21,23 @@
             >Bootstrap Content Feeder by PubNub</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#get-started">Get Started</a></li>
-            <li><a href="#datasync-docs">DataSync Docs</a></li>
+            <li><a href="#get-started">
+                Get Started
+            </a></li>
+            <li><a href="#datasync-docs">
+                DataSync Docs
+                &nbsp;<span class="glyphicon glyphicon-book"></span>
+            </a></li>
             <li><a href="https://github.com/stephenlb/bootstrap-stream-feeder">
                 View on GitHub
             </a></li>
             <li><a
             target="bugreport"
             href="https://github.com/stephenlb/bootstrap-stream-feeder/issues/new"
-            >Bug Report</a>
+            >
+                Bug Report
+                &nbsp;<span class="glyphicon glyphicon-user"></span>
+            </a>
             </li>
         </ul>
     </div>
@@ -220,7 +228,7 @@
                     You can only get that fast "Snappy" feel
                     with a Global Real-time Network.
                 </p><p>
-                    Every event is replicated more than 400 times;
+                    Every event is replicated more than 500 times;
                     <strong>extreme global reliability</strong>
                     via a Real-time Network.
                 </p>
@@ -385,10 +393,13 @@ var db = PUBNUB.sync( 'db_name', settings );
                                         PubNub Admin Portal
                                     </a>
                                     <p><small>
-                                    Optionally Watch PubNub Basic Video 1 - 
-                                    <a href="https://vimeo.com/78274848">
-                                        Registering for PubNub API Keys
-                                    </a>
+                                        Optionally Watch PubNub Basic Video 1 -
+                                        <a href="https://vimeo.com/78274848">
+                                            Registering for PubNub API Keys
+                                        </a>
+                                        <br>
+                                        The video also describes what
+                                        each key purpose.
                                     </small></p>
                                 </td></tr>
                                 <tr><td>2</td><td>
@@ -422,38 +433,55 @@ console.log(item.id);
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">
-                        DataSync starts with an always-on Socket Connection
+                        Now you are connected to a DataSync DB
+                        and want to Write Data
                     </h3></div>
                     <div class="panel-body">
-                        Panel content
+                        This code step is simple and allows you to
+                        create a new row in the Sync DB.
+                        This process will simultaneously write a new entry
+                        in three paths: 
+                        <strong>Local Memory</strong>,
+                        <strong>Local Disk</strong> and
+                        <strong>Cloud</strong>.
+                        The Cloud path will replicate each write event
+                        over 500 times for extreme reliability
+                        on a Global Real-time Network.
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- READ (GET) -->
+        <!-- READ (FIND) -->
         <div class="row">
             <div class="col-lg-6">
                 <div class="panel panel-info"><div class="panel-heading">
                     <h3 class="panel-title">
-                        Read Item from DB &nbsp;
+                        Read/Find Items in DB &nbsp;
                         <code>db.read(id)</code>
                     </h3>
                 </div>
                 <div class="panel-body">
 <pre>
+// option 1
 var item = db.read(id);
 console.log(item);
+
+// option 2
+var items = db.find({ headline : "match" });
+console.log(items);
 </pre>
                 </div></div>
             </div>
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">
-                        DataSync starts with an always-on Socket Connection
+                        Read Data from a DataSync Database
                     </h3></div>
                     <div class="panel-body">
-                        tesxt.
+                        To read an item, you can specify the ID
+                        or search for rows that matchs a key entry
+                        in the row.
                     </div>
                 </div>
             </div>
@@ -483,10 +511,15 @@ console.log(item);
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">
-                        DataSync starts with an always-on Socket Connection
+                        Make Changes to Rows or Append new Colomns
                     </h3></div>
                     <div class="panel-body">
-                        Panel content
+                        You have two options to make it easy to change
+                        items by executing an instance method on the
+                        item directly via <code>item.update({})</code> or
+                        if you know the <strong>ID</strong> of the item
+                        then you can execute <code>db.update( id, {} )</code>
+                        via the DataSync DB instance.
                     </div>
                 </div>
             </div>
@@ -514,10 +547,16 @@ db.delete(item.id);
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">
-                        DataSync starts with an always-on Socket Connection
+                        Delete Items
                     </h3></div>
                     <div class="panel-body">
-                        ...
+                        You have two options to delete
+                        items by executing an instance method on the
+                        item directly via <code>item.delete()</code> with
+                        no arguments specified, or
+                        if you know the <strong>ID</strong> of the item
+                        then you can execute <code>db.delete(id)</code>
+                        via the DataSync DB instance.
                     </div>
                 </div>
             </div>
