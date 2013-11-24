@@ -35,6 +35,20 @@
     text-shadow: 0px 0px 2px #fff;
     font-weight: 500;
 }
+.featurebg2 {
+    color: #dfdfee;
+    font-weight: 200;
+    text-shadow: 2px 2px 1px rgba(0,0,0,0.3);
+    background: radial-gradient(rgba(66,19,202,.5) 15%, transparent 16%) 0 0;
+    background-color: rgba(66,19,202,0.8);
+    background-size: 16px 16px;
+    border-top: 28px solid rgba(255,255,255,0.1);
+    border-bottom: 28px solid rgba(255,255,255,0.1);
+}
+.featurebg2-padding {
+    margin: 60px 0px;
+    padding: 60px 0px;
+}
 .publish-bottom {
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(0,0,0,0.1);

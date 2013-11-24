@@ -83,7 +83,7 @@
                         type="button"
                         class="btn btn-default btn-sm"
                     >
-                        Admin Settings
+                        DB Settings
                         &nbsp;<span
                         class="glyphicon glyphicon-cog"></span>
                     </button>
@@ -332,9 +332,8 @@
     </div>
 
     <!-- DOCUMENTATION PART 1 -->
-    <div class="container">
+    <div class="featurebg2 featurebg2-padding"><div class="container">
         <h2 id="datasync-docs">Documentation for Real-time DataSync SDK</h2>
-        <div class="well well-g">
             The following is documentation for a Real-time Network
             DataSync System built for optimal performance on mobile
             connections and unreliable environments.
@@ -342,7 +341,8 @@
             the network, you can always have certainty your data is sync'ed.
             This SDK docs will describe API usage and considerations
             when invoking each method provided.
-        </div>
+    </div></div>
+    <div class="container">
 
         <!-- INIT (SYNC) -->
         <div class="row">
@@ -459,6 +459,8 @@ console.log(item.id);
                     <h3 class="panel-title">
                         Read/Find Items in DB &nbsp;
                         <code>db.read(id)</code>
+                        and
+                        <code>db.find({})</code>
                     </h3>
                 </div>
                 <div class="panel-body">
