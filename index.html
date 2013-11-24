@@ -836,6 +836,7 @@ $pubnub = new Pubnub(
 );
 
 ## Create Row
+$item_id = uuid();
 $pubnub-&gt;publish(array(
     'channel' =&gt; 'testChannel',
     'message' =&gt; array(
