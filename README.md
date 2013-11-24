@@ -21,12 +21,12 @@
     var db = PUBNUB.sync( 'db-admin', settings );
 
     // View All Items in DB
-    db.all(function(item){       /* -- render all items -- */ });
+    db.all(function(item){       /* -- render all items  -- */ });
 
     // Register All Callback Events
-    db.on.create(function(item){ /* -- render new item  -- */ });
-    db.on.update(function(item){ /* -- update item      -- */ });
-    db.on.delete(function(item){ /* -- remove item      -- */ });
+    db.on.create(function(item){ /* -- new item          -- */ });
+    db.on.update(function(item){ /* -- updated item      -- */ });
+    db.on.delete(function(item){ /* -- removed item      -- */ });
 
     // Create Item
     var item = db.create({ headline : "Hello!" });
