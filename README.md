@@ -1,8 +1,19 @@
-# PubNub DataSync SDK with Boostrap Content Feeder Demo
+# Real-time Content Curation for Bootstrap
+### Plus PubNub DataSync SDK
 
- - See Demo Live: [Bootstrap Content Feeder](http://stephenlb.github.io/bootstrap-stream-feeder/)
- - Read the Full Docs: [Bootstrap Content Feeder DataSync SDK Documentation](http://stephenlb.github.io/bootstrap-stream-feeder/#datasync-docs)
+ - See Demo Live: [Real-time Content Curation for Bootstrap](http://stephenlb.github.io/bootstrap-stream-feeder/)
+ - Read the Full Docs: [Real-time Content Curation for Bootstrap DataSync SDK Documentation](http://stephenlb.github.io/bootstrap-stream-feeder/#datasync-docs)
  - Register For API Keys: [Signup/Login to PubNub Admin Portal](https://admin.pubnub.com/)
+
+A real-time feed management system that enables 
+the rapid broadcasting of headlines 
+for applications in social news, social TV, 
+social music, social sports, social commerce and social finance.
+
+DataSync is the ability to have apps always be at the same-state 
+regardless of point-of-load. 
+Upon reconnect, all data is re-synced with the client app. 
+Your data is replicated to all data centers and optionally encrypted.
 
 ```html
 <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
