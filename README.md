@@ -1,4 +1,4 @@
-# Real-time Content Curation for Bootstrap
+# Real-time Content Curation
 ### Plus PubNub DataSync SDK
 
  - See Demo Live: [Real-time Content Curation for Bootstrap](http://pubnub.github.io/bootstrap-content-curator/)
