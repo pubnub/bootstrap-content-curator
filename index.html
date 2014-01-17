@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Bootstrap Content Feeder</title>
+    <title>Bootstrap Content Curator</title>
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="dist/css/styles.css" rel="stylesheet">
 </head>
@@ -18,7 +18,7 @@
                 class="navbar-brand"
                 target="pubnubwebsite"
                 href="http://www.pubnub.com/"
-            >Bootstrap Content Feeder by PubNub</a>
+            >Bootstrap Content Curator by PubNub</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="#get-started">
@@ -44,7 +44,7 @@
     </div></div>
 
     <div class="jumbotron">
-        <h1>Bootstrap Content Feeder</h1>
+        <h1>Bootstrap Content Curator</h1>
         <div class="container">
             <p class="lead">
                 A real-time feed management system that enables the rapid
@@ -52,17 +52,12 @@
                 <br>
                 for applications in
                 <strong>social news</strong>,
-                social TV,
-                social music,
-                social sports,
-                social commerce and
-                social finance.
+                TV,
+                music,
+                sports,
+                commerce and
+                finance.
             </p>
-            <p><a
-                class="btn btn-lg btn-info"
-                href="#get-started"
-                role="button"
-            >Get Started</a></p>
         </div>
     </div>
 
@@ -102,12 +97,14 @@
         </div>
     </div>
 
+    <div id="get-started"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-4">
-                <h2 id="get-started">
+                <h2>
                     1. Reporter
                     &nbsp;<span class="glyphicon glyphicon-pencil"></span>
+                    <!--
                     &nbsp;<button
                         type="button"
                         class="btn btn-default btn-sm"
@@ -116,6 +113,7 @@
                         &nbsp;<span
                         class="glyphicon glyphicon-cog"></span>
                     </button>
+                    -->
                 </h2>
                 <div class="panel panel-primary"></div>
 
@@ -266,7 +264,7 @@
             <div class="col-lg-4">
                 <h2>
                     <span class="glyphicon glyphicon-lock"></span>
-                    &nbsp;Top Security
+                    &nbsp;Highly Secure
                 </h2>
                 <p>
                     Security is a complex and widely growing requirement
@@ -274,7 +272,7 @@
                     Systems like PubNub.
                     <strong>SSL</strong> TLS Sockets,
                     <strong>SHA256 Message Signing</strong>,
-                    <strong>ACL (Access Control Level) </strong>and
+                    <strong>PAM ACL Access Management</strong> and
                     <strong>AES256 Symmetric Crypto</strong>
                     are industry standard methods for providing
                     High Levels of security for your application.
@@ -293,7 +291,7 @@
       <div class="row featurette">
         <div class="col-md-7">
           <h2 class="featurette-heading">
-            Oh yeah, it's real DataSync.
+            Real-time DataSync, for real.
             <span class="text-muted">See for yourself.</span>
           </h2>
           <p class="lead">
@@ -330,7 +328,7 @@
             Many customers are using
             <strong>DataSync</strong> today
             on the PubNub Real-time Network.
-            We made it even easy
+            We made it even easier
             by offering an SDK enabling
             true DataSync powered by the worlds largest
             Global Real-time Network.
@@ -347,7 +345,7 @@
             <span class="text-muted">Zero Loss.</span>
           </h2>
           <p class="lead">
-            High speed reconnection times allow recover
+            High speed reconnection times allow recovery
             of lost data in a snap.
             After a successful reconnect all pending
             read/write events are sync'ed.
@@ -362,8 +360,9 @@
     </div>
 
     <!-- DOCUMENTATION PART 1 -->
+    <div id="datasync-docs"></div>
     <div class="featurebg2 featurebg2-padding"><div class="container">
-        <h2 id="datasync-docs">Documentation for Real-time DataSync SDK</h2>
+        <h2>Documentation for Real-time DataSync SDK</h2>
             The following is documentation for a Real-time Network
             DataSync System built for optimal performance on mobile
             connections and unreliable environments.
@@ -912,95 +911,40 @@ function uuid() {
     </div>
 
 
+<!-- FOOTER -->
+<div class="footer"><div class="container"><div class="row">
+    <div class="col-lg-7">
+        <h3 class="footer-title">
+            More with <a href="http://pubnub.com"> PubNub Real-Time Network </a>
+        </h3>
+        <p>
+            Do you like this solution kit?
+            Want to get more stuff like this?<br>
+            Subscribe to
+            <a
+                target="pntwitter"
+                href="http://twitter.com/PubNub">@PubNub</a>
+            news and updates!<br><BR>
+        </p>
+    </div>
 
-
-
-
-    <div class="container"><div class="row">
-        <div class="col-lg-6">
-            <h3>pubnub-sync.js TODO</h3>
-            <ul class="list-group">
-                <li class="list-group-item">ADD CRYPTO</li>
-                <li class="list-group-item">ADD CRYPTO</li>
-                <li class="list-group-item">ADD CRYPTO</li>
-                <li class="list-group-item">grant(read,write,ttl)</li>
-                <li class="list-group-item">localStorage max 5MB... fix?</li>
-                <li class="list-group-item">sortby</li>
-                <li class="list-group-item">
-                Updates In progress:
-                - Show the changes along with the
-                - full object in the onUPDATE event.
-                - Return Full Object in Array for Find method.
-                - domain to transactionID
-                </li>
-                <li class="list-group-item">and table editor tool</li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item">CloudBase.IO Integration</li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item">
-            I'm adding these to an FAQ:<br>
-            Is key the only attribute that you can use for the find call?<br>
-            you can use any key/value pair.  { "toast" : "golden" }<br>
-            Is the return from find a standard Array?<br>
-            Yes.<br>
-            What channel are you using for transmitting db changes?<br>
-            the "name" of the database.<br>
-            var db = PUBNUB.sync( 'db1', settings );<br>
-                </li>
-            </ul>
-        </div>
-
-        <div class="col-lg-6">
-            <h3>Bootstrap Content Feeder TODO</h3>
-            <ul class="list-group">
-                <li class="list-group-item">add ordering</li>
-                <li class="list-group-item">Reload config dynamic</li>
-                <li class="list-group-item">setup form api key</li>
-                <li class="list-group-item">code snippets</li>
-                <li class="list-group-item">viewer embed code</li>
-                <li class="list-group-item">editor settings</li>
-                <li class="list-group-item">previewer</li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item">dev-console link direct</li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item">doc: max reflog</li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item">desktop notifications</li>
-                <li class="list-group-item">preview area w/HTML support</li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item">Security w/ Options</li>
-                <li class="list-group-item">perm-ses, pass, sec, acl</li>
-                <li class="list-group-item">footer/PubNub</li>
-                <li class="list-group-item">multiple display opts</li>
-                <li class="list-group-item">works on all mobile/web</li>
-                <li class="list-group-item">Examples</li>
-                <li class="list-group-item">add CONFirmation for PUSH</li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item">
-                </li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item"></li>
-                <li class="list-group-item"></li>
-            </ul>
-        </div>
-    </div></div>
-
-
-    <!-- Site footer -->
-    <div class="container">
-        <div class="footer">
-            <p>&copy; PubNub 2013</p>
+    <div class="col-lg-5">
+        <div class="footer-banner">
+            <h3 class="footer-title">
+                <a href="http://pubnub.com"><div class="pubnub-logo-footer"></div></A>
+                Real-Time Network
+            </h3>
+            <div class=row-margin-small>
+            <a class="btn btn-info btn-lg btn-block"
+            alt="PubNub Real-Time Network"
+            target=freetrial
+            href="http://www.pubnub.com/free-trial">
+            Try PubNub Today!</a></div>
         </div>
     </div>
+</div>
+    <h4><a target="signup" href="http://www.pubnub.com/free-trial">PubNub Real-Time Network Sign-up</a></h4>
+</div></div>
 
 
     <div class="container">

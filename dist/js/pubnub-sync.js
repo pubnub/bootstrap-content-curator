@@ -202,7 +202,7 @@ PUBNUB.sync = function( name, settings ) {
         var found = [];
         PUBNUB.each( query, function( key, val ) {
             PUBNUB.each( db, function( id, row ) {
-                if (key in row && val == row[key]) found.push(db[id]);
+                if (key in row && val == row[key]) found.push(reference(id));
             } );
         } );
         return found;
