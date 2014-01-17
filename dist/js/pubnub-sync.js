@@ -27,15 +27,15 @@ PUBNUB.sync = function( name, settings ) {
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // BINDING EVENTS FOR USER
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-    self.on = {
-        create     : function(cb) { on.create     = cb }
-    ,   change     : function(cb) { on.change     = cb }
-    ,   update     : function(cb) { on.update     = cb }
-    ,   delete     : function(cb) { on.delete     = cb }
-    ,   debug      : function(cb) { on.debug      = cb }
-    ,   connect    : function(cb) { on.connect    = cb }
-    ,   disconnect : function(cb) { on.disconnect = cb }
-    };
+    self.on = function( method, cb )  { on[method]    = cb };
+    self.on.create     = function(cb) { on.create     = cb };
+    self.on.change     = function(cb) { on.change     = cb };
+    self.on.update     = function(cb) { on.update     = cb };
+    self.on.delete     = function(cb) { on.delete     = cb };
+    self.on.remove     = function(cb) { on.delete     = cb };
+    self.on.debug      = function(cb) { on.debug      = cb };
+    self.on.connect    = function(cb) { on.connect    = cb };
+    self.on.disconnect = function(cb) { on.disconnect = cb };
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
     // SYNC DB
