@@ -1,8 +1,8 @@
 # Real-time Content Curation for Bootstrap
 ### Plus PubNub DataSync SDK
 
- - See Demo Live: [Real-time Content Curation for Bootstrap](http://stephenlb.github.io/bootstrap-stream-feeder/)
- - Read the Full Docs: [Real-time Content Curation for Bootstrap DataSync SDK Documentation](http://stephenlb.github.io/bootstrap-stream-feeder/#datasync-docs)
+ - See Demo Live: [Real-time Content Curation for Bootstrap](http://pubnub.github.io/bootstrap-content-curator/)
+ - Read the Full Docs: [Real-time Content Curation for Bootstrap DataSync SDK Documentation](http://pubnub.github.io/bootstrap-content-curator/#datasync-docs)
  - Register For API Keys: [Signup/Login to PubNub Admin Portal](https://admin.pubnub.com/)
 
 A real-time feed management system that enables 
@@ -18,7 +18,7 @@ Your data is replicated to all data centers and optionally encrypted.
 ```html
 <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
 <script src="http://cdn.pubnub.com/pubnub-crypto.min.js"></script>
-<script src="http://stephenlb.github.io/bootstrap-stream-feeder/dist/js/pubnub-sync.js"></script>
+<script src="http://pubnub.github.io/bootstrap-content-curator/dist/js/pubnub-sync.js"></script>
 <script>(function(){
     var settings = {
         publish_key   : 'pub-5ad63a7a-0c72-4b86-978d-960dcdb971e1'
