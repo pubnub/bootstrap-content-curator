@@ -55,7 +55,7 @@ function submit_headline() {
     push_text_area.value = '';
 
     // Create NEW Headline Entry
-    db_admin.create({ headline : headline });
+    db_admin.create({ headline : headline, time : +new Date });
 }
 
 
@@ -135,7 +135,7 @@ delegate( PUBNUB.$('push-edit-panel'),   'editor' );
 // PUBLISH
 PUBNUB.events.bind( 'editor.publish', function(event) {
     db_public.create(
-        { headline : PUBNUB.$(event.data).innerHTML },
+        { headline : PUBNUB.$(event.data).innerHTML, time : +new Date },
         event.data
     );
 } );
