@@ -183,7 +183,7 @@ PUBNUB.events.bind( 'editor.cancel', function(event) {
 // GET ELEMENT ACTION DATA ATTRIBUTE AND FIRE ASSOCIATED EVENT
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 function delegate( element, namespace ) {
-    PUBNUB.bind( 'click', element, function(e) {
+    PUBNUB.bind( 'mousedown,touchstart', element, function(e) {
         var data   = bubblefind( e, 'data-data' )
         ,   action = bubblefind( e, 'data-action' );
         if (!action) return true;

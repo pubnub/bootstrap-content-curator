@@ -378,6 +378,7 @@
             <div class="col-lg-6">
                 <div class="panel panel-primary"><div class="panel-heading">
                     <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-signal"></span> &nbsp;
                         Initiate DB Connection &nbsp;
                         <code>PUBNUB.sync()</code>
                     </h3>
@@ -399,6 +400,7 @@ var db = PUBNUB.sync( 'db_name', settings );
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">
+                        <span class="glyphicon glyphicon-signal"></span> &nbsp;
                         DataSync starts with an always-on Socket Connection
                     </h3></div>
                     <div class="panel-body">
@@ -448,6 +450,7 @@ var db = PUBNUB.sync( 'db_name', settings );
             <div class="col-lg-6">
                 <div class="panel panel-success"><div class="panel-heading">
                     <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-plus"></span> &nbsp;
                         Insert New Item &nbsp; 
                         <code>db.create({})</code>
                     </h3>
@@ -462,8 +465,8 @@ console.log(item.id);
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">
-                        Now you are connected to a DataSync DB
-                        and want to Write Data
+                        <span class="glyphicon glyphicon-plus"></span> &nbsp;
+                        Write Data Now you are connected to a DataSync DB
                     </h3></div>
                     <div class="panel-body">
                         This code step is simple and allows you to
@@ -486,6 +489,7 @@ console.log(item.id);
             <div class="col-lg-6">
                 <div class="panel panel-info"><div class="panel-heading">
                     <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-play"></span> &nbsp;
                         Read/Find Items in DB &nbsp;
                         <code>db.read(id)</code>,
                         <code>db.find({})</code> and
@@ -512,6 +516,7 @@ var items = db.all(function(item){
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">
+                        <span class="glyphicon glyphicon-play"></span> &nbsp;
                         Read Data from a DataSync Database
                     </h3></div>
                     <div class="panel-body">
@@ -528,6 +533,7 @@ var items = db.all(function(item){
             <div class="col-lg-6">
                 <div class="panel panel-warning"><div class="panel-heading">
                     <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-pencil"></span> &nbsp;
                         Update and Replace Items &nbsp;
                         <code>item.update({})</code>
                     </h3>
@@ -547,6 +553,7 @@ console.log(item);
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">
+                        <span class="glyphicon glyphicon-pencil"></span> &nbsp;
                         Make Changes to Rows or Append new Colomns
                     </h3></div>
                     <div class="panel-body">
@@ -566,6 +573,7 @@ console.log(item);
             <div class="col-lg-6">
                 <div class="panel panel-danger"><div class="panel-heading">
                     <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-minus"></span> &nbsp;
                         Delete Items Forever &nbsp;
                         <code>item.delete()</code>
                     </h3>
@@ -583,6 +591,7 @@ db.delete(item.id);
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">
+                        <span class="glyphicon glyphicon-minus"></span> &nbsp;
                         Delete Items
                     </h3></div>
                     <div class="panel-body">
@@ -615,6 +624,7 @@ db.delete(item.id);
             <div class="col-lg-6">
                 <div class="panel panel-success"><div class="panel-heading">
                     <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-plus"></span> &nbsp;
                         OnCreate
                         <code>db.on.create()</code>
                     </h3>
@@ -630,6 +640,7 @@ db.on.create(function(item){
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">
+                        <span class="glyphicon glyphicon-plus"></span> &nbsp;
                         Create Event
                     </h3></div>
                     <div class="panel-body">
@@ -646,6 +657,7 @@ db.on.create(function(item){
             <div class="col-lg-6">
                 <div class="panel panel-warning"><div class="panel-heading">
                     <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-pencil"></span> &nbsp;
                         OnUpdate
                         <code>db.on.update()</code>
                     </h3>
@@ -661,6 +673,7 @@ db.on.update(function(item){
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">
+                        <span class="glyphicon glyphicon-pencil"></span> &nbsp;
                         Update Event
                     </h3></div>
                     <div class="panel-body">
@@ -679,6 +692,7 @@ db.on.update(function(item){
             <div class="col-lg-6">
                 <div class="panel panel-danger"><div class="panel-heading">
                     <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-minus"></span> &nbsp;
                         OnDelete
                         <code>db.on.delete()</code>
                     </h3>
@@ -694,6 +708,7 @@ db.on.delete(function(item){
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading"><h3 class="panel-title">
+                        <span class="glyphicon glyphicon-minus"></span> &nbsp;
                         Delete Event
                     </h3></div>
                     <div class="panel-body">
