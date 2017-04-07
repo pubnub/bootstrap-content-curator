@@ -15,8 +15,8 @@ var settings = {
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // INIT OBJECTS AND ELEMENTS
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-var db_admin                = PUBNUB.sync( 'db-admin',  settings )
-,   db_public               = PUBNUB.sync( 'db-public', settings )
+var db_admin                = PUBNUB.sync( 'db-admin-b',  settings )
+,   db_public               = PUBNUB.sync( 'db-public-b', settings )
 ,   push_submit             = PUBNUB.$('push-submit')
 ,   new_headline_area       = PUBNUB.$('new-headline-area')
 ,   embed_code              = PUBNUB.$('embed-code')
